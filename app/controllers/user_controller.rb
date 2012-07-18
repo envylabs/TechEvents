@@ -7,7 +7,7 @@ class UserController < ApplicationController
 
 	def update
 		if current_user.update_attribute(:email, params[:user][:email])
-			redirect_to root_url, notice: "Email address added!"
+			redirect_to root_url, notice: "Email address updated!"
 		else
 			raise "EmailWasNotUpdated"
 		end
