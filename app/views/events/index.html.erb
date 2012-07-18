@@ -1,0 +1,19 @@
+<h1>Listing events</h1>
+
+<hr>
+
+<% @events.each do |event| %>
+    <h2><%= event.name %></h2>
+    <h3><%= l(event.start_time.in_time_zone("EST"), :format => :short) %> to <%= l(event.end_time.in_time_zone("EST"), :format => :short) %></h3>
+    <p><%= event.description %></p>
+    <p><em><%= event.human_address %></em></p>
+    <br />
+<% end %>
+
+<br />
+
+<%= link_to 'New Event', new_event_path %>
+
+<br /><br />
+
+<%= link_to 'Home', root_url %>

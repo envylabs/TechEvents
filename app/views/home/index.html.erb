@@ -1,0 +1,16 @@
+<h1>Home</h1>
+<% if current_user %>
+	<%= link_to "Sign out", :signout %>
+	<br><br>
+	<pre>
+		<code>
+			<%= current_user.to_yaml %>
+		</code>
+	</pre>
+<% else %>
+	<%= link_to "Sign in with Twitter", "/auth/twitter" %>
+<% end %>
+
+<br /><br />
+
+<%= link_to 'Events', events_url %>
