@@ -2,6 +2,6 @@ development:
   TWITTER_KEY: 'ayzeniuaMusWs60Qk4SFA'
   TWITTER_SECRET: '7S9bLVZ0REt6oUFCfEnTlWTkMEj2fXtG90on4VGE'
 
-testing:
+test:
   TWITTER_KEY: 'ayzeniuaMusWs60Qk4SFA'
   TWITTER_SECRET: '7S9bLVZ0REt6oUFCfEnTlWTkMEj2fXtG90on4VGE'

@@ -21,4 +21,11 @@ group :assets do
 	gem 'uglifier', '>= 1.0.3'
 end
 
+group :test, :development do
+	gem 'rspec-rails', '~> 2.11.0'
+	gem 'shoulda-matchers', '~> 1.2.0'
+	gem 'factory_girl_rails', '~> 3.5.0'
+	gem 'capybara', '~> 1.1.2'
+end
+
 gem 'jquery-rails'

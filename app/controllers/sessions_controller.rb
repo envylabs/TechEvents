@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 		session[:user_id] = user.id
 
 		if user.email.blank?
-			redirect_to user_initial_setup_url
+			redirect_to edit_user_url
 		else
 			redirect_to root_url, notice: "Signed in!"
 		end
