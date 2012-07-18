@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 		where(auth.slice('provider', 'uid')).first || create_from_omniauth(auth)
 	end
 
+	private
+
 	def self.create_from_omniauth(auth)
 		create! do |user|
 			user.provider = auth['provider']

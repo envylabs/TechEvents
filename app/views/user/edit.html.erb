@@ -1,6 +1,6 @@
 <h1>We just need your email to continue</h1>
 
-<%= form_for(:user, :url => :user_initial_setup) do |f| %>
+<%= form_for(@user) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.text_field :email, :value => @user.email %>
