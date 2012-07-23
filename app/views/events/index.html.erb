@@ -8,7 +8,12 @@
     <p><%= event.description %></p>
     <p><strong>Notes:</strong> <%= event.notes %></p>
     <p><em><%= event.street %> in <%= event.city %> (<%= event.latitude %>, <%= event.longitude %>)</em></p>
-    <h6>Posted by <%= link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank" %></h6>
+    <h6>
+    	Posted by <%= link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank" %>
+    	<% if user_signed_in? %>
+    		&nbsp;|&nbsp;<%= link_to 'Edit', edit_event_path(event) %>
+    	<% end %>
+    </h6>
     <br />
 <% end %>
 

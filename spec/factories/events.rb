@@ -5,9 +5,14 @@ FactoryGirl.define do
 		link 'http://meetup.com/'
 		start_time '2012-07-20T19:30:00Z'
 		end_time '2012-07-20T20:30:00Z'
-		latitude ''
-		longitude ''
-		human_address ''
+		latitude 28.5410417
+		longitude -81.3787435
+		original_address '121 South Orange Avenue #1050, Orlando, FL'
+		street '121 S Orange Ave'
+		city 'Orlando'
+		state 'Florida'
+		country 'United States'
+		notes 'Join us on the 20th floor'
 		newsletter false
 		user
 	end
