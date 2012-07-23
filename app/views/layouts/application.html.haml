@@ -1,0 +1,52 @@
+-# HTML5 Doctype
+!!! 5
+%html
+	%head
+		%title Orlando Tech Events
+		-# Include stylesheet and javascript manifests
+		=stylesheet_link_tag    "application"
+		=javascript_include_tag "application"
+		
+		-# Meta tags to protect from cross site request forgery
+		=csrf_meta_tags
+
+
+	%body	
+		-# HTML5 header for the nav bar
+		.navbar.navbar-fixed-top
+			.navbar-inner
+				.container
+					%a.btn.btn-navbar{:"data-toggle" => "collapse", :"data-target" => ".nav-collapse"}
+						%span.icon-bar
+						%span.icon-bar
+						%span.icon-bar
+
+					%a.brand{href: "#"} Orlando Tech Events
+
+					.nav-collapse
+						%ul.nav.pull-right
+							%li
+								-if current_user
+									=link_to "Sign out", :signout
+								-else
+									%li=link_to "Sign in with Twitter", "/auth/twitter", id: "signin"
+
+
+		-# Center everything else on the page in the container
+		.container
+
+			
+			-# Yield all other content from views here
+			=yield
+
+		%footer
+			.container{role: "main"}
+				.row
+					.span6
+						%p
+							TechEvents.us is #{link_to "open-source software", "http://github.com/envylabs/TechEvents", target: "black"}.
+							%br
+							%small Copyright &copy; 2012 Envy Labs, LLC. All rights reserved.
+					.span6#social-media
+						=image_tag "http://placehold.it/50x50"
+						=image_tag "http://placehold.it/50x50"

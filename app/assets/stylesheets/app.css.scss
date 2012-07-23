@@ -1,0 +1,67 @@
+/*
+  TechEvents's site styles
+  Special styles to extend Bootstrap
+*/
+
+/* Body and structure
+-------------------------------------------------- */
+
+body {
+  background-color: #fff;
+  background-image: url(/assets/body_bg.png);
+  position: relative;
+  padding-top: 60px; }
+
+.sidebar {
+	.post-event {
+		margin-bottom: 19px;
+		h6 {
+			text-align: center; }
+		.btn-large {
+			font-size: 15pt !important;
+			width: 272px; } }
+
+	.info-block {
+		background: #265974;
+		min-height: 20px;
+		padding: 15px;
+		margin-bottom: 20px;
+		border: 6px solid #193c4e;
+		color: #fff;
+		.form-inline {
+			margin: 0; } }
+}
+
+.upcoming-events {
+	margin-bottom: 50px;
+	h1 {
+		font-size: 36pt;
+		margin-top: 14px;
+		margin-bottom: 32px; }
+	.date-header {
+		background: #d8d8d8;
+		padding: 9px 12px;
+		margin-bottom: 10px;
+		p {
+			margin: 0;
+			padding: 0; } }
+	.event-entry {
+		margin-bottom: 15px;
+		h3 {
+			margin-top: -5px; } }
+}
+
+footer {
+	background: #3d6a83 url(../assets/bg-footer.png) repeat;
+	height: 80px;
+	padding: 40px 15px 10px 15px;
+	-webkit-box-shadow: inset 0px 3px 15px rgba(0,0,0,0.4);
+}
+
+footer p {
+	font-size: 11pt;
+}
+
+footer h1, footer h2, footer h3, footer h4, footer h5, footer h6, footer p, footer small { color: #fff; }
+
+footer #social-media { text-align: right; }

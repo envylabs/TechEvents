@@ -1,0 +1,112 @@
+%section.row
+    .span8.upcoming-events
+        %h1 Upcoming Events
+
+        / Static (sample) content:
+        / ============================
+        .date-header
+            %p Tomorrow
+
+        .row
+            .span8.event-entry
+                .row
+                    .span2=image_tag "http://placehold.it/200x200"
+                    .span6
+                        %h3
+                            Git Real (Code School Beta)
+                            %small Tuesday, July 23th, 6:30pm
+                        %p This month Code School needs help testing our Git (source control) course. Topics include making commits, pushing, pulling, cloning, branching, rebasing, tagging, diffing, logging, and other real world souce control scenarios. Beginners very welcome. Please RSVP.. Free dinner included. #{link_to "[more info]", "http://envylabs.com"}
+                        %p
+                            %em 189 S. Orange Avenue in Orlando
+
+        .row
+            .span8.event-entry
+                .row
+                    .span2=image_tag "http://placehold.it/200x200"
+                    .span6
+                        %h3
+                            Git Real (Code School Beta)
+                            %small Tuesday, July 23th, 6:30pm
+                        %p This month Code School needs help testing our Git (source control) course. Topics include making commits, pushing, pulling, cloning, branching, rebasing, tagging, diffing, logging, and other real world souce control scenarios. Beginners very welcome. Please RSVP.. Free dinner included. #{link_to "[more info]", "http://envylabs.com"}
+                        %p
+                            %em 189 S. Orange Avenue in Orlando
+
+        .date-header
+            %p Next week
+
+        .row
+            .span8.event-entry
+                .row
+                    .span2=image_tag "http://placehold.it/200x200"
+                    .span6
+                        %h3
+                            Git Real (Code School Beta)
+                            %small Tuesday, July 23th, 6:30pm
+                        %p This month Code School needs help testing our Git (source control) course. Topics include making commits, pushing, pulling, cloning, branching, rebasing, tagging, diffing, logging, and other real world souce control scenarios. Beginners very welcome. Please RSVP.. Free dinner included. #{link_to "[more info]", "http://envylabs.com"}
+                        %p
+                            %em 189 S. Orange Avenue in Orlando
+
+        .row
+            .span8.event-entry
+                .row
+                    .span2=image_tag "http://placehold.it/200x200"
+                    .span6
+                        %h3
+                            Git Real (Code School Beta)
+                            %small Tuesday, July 23th, 6:30pm
+                        %p This month Code School needs help testing our Git (source control) course. Topics include making commits, pushing, pulling, cloning, branching, rebasing, tagging, diffing, logging, and other real world souce control scenarios. Beginners very welcome. Please RSVP.. Free dinner included. #{link_to "[more info]", "http://envylabs.com"}
+                        %p
+                            %em 189 S. Orange Avenue in Orlando
+
+        .row
+            .span8.event-entry
+                .row
+                    .span2=image_tag "http://placehold.it/200x200"
+                    .span6
+                        %h3
+                            Git Real (Code School Beta)
+                            %small Tuesday, July 23th, 6:30pm
+                        %p This month Code School needs help testing our Git (source control) course. Topics include making commits, pushing, pulling, cloning, branching, rebasing, tagging, diffing, logging, and other real world souce control scenarios. Beginners very welcome. Please RSVP.. Free dinner included. #{link_to "[more info]", "http://envylabs.com"}
+                        %p
+                            %em 189 S. Orange Avenue in Orlando
+
+
+        / Dynamic content (not shown):
+        / ============================
+        / -@events.each do |event|
+        /     %h2=event.name
+        /     %h3 #{l(event.start_time.in_time_zone("EST"), :format => :short)} to #{l(event.end_time.in_time_zone("EST"), :format => :short)}
+        /     %p=event.description
+        /     %p
+        /         %strong Notes:
+        /         #{event.notes}
+        /     %p
+        /         %em #{event.street} in #{event.city} (#{event.latitude}, #{event.longitude})
+        /     %h6
+        /         Posted by #{link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"}
+            
+        /         -if user_signed_in?
+        /             &nbsp;|&nbsp;#{link_to 'Edit', edit_event_path(event)}
+
+        /     %br
+
+    
+    .span4.sidebar
+        .span4.post-event
+            %h6 Know of something interesting going on?
+            %a.btn.btn-large.btn-success{href: "#{new_event_path}"} Post an event
+
+        .span4
+            .info-block
+                %h3 Subscribe to our mailing list
+                %p Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on in Orlando this month.
+                %form.form-inline
+                    %input.input-medium{type: "text", placeholder: "johndoe@envylabs.com"}
+                    %button.btn{type: "submit"} Subscribe
+
+        .span4
+            .info-block
+                %h3 Never miss an event
+                %p Follow Orlando Tech Events on Twitter and Facebook for up-to-the-minute updates about what's going on in your city.
+                =image_tag "http://placehold.it/50x50"
+                =image_tag "http://placehold.it/50x50"
