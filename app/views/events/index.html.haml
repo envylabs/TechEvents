@@ -92,21 +92,22 @@
 
     
     .span4.sidebar
-        .span4.post-event
-            %h6 Know of something interesting going on?
-            %a.btn.btn-large.btn-success{href: "#{new_event_path}"} Post an event
+        .row
+            .span4.post-event
+                %h6 Know of something interesting going on?
+                %a.btn.btn-large.btn-success{href: "#{new_event_path}"} Post an event
 
-        .span4
-            .info-block
-                %h3 Subscribe to our mailing list
-                %p Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on in Orlando this month.
-                %form.form-inline
-                    %input.input-medium{type: "text", placeholder: "johndoe@envylabs.com"}
-                    %button.btn{type: "submit"} Subscribe
+            .span4
+                .info-block
+                    %h3 Subscribe to our mailing list
+                    %p Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on in Orlando this month.
+                    %form.form-inline
+                        %input.input-medium{type: "text", placeholder: "johndoe@envylabs.com"}
+                        %button.btn{type: "submit"} Subscribe
 
-        .span4
-            .info-block
-                %h3 Never miss an event
-                %p Follow Orlando Tech Events on Twitter and Facebook for up-to-the-minute updates about what's going on in your city.
-                =image_tag "http://placehold.it/50x50"
-                =image_tag "http://placehold.it/50x50"
+            .span4
+                .info-block
+                    %h3 Never miss an event
+                    %p Follow Orlando Tech Events on Twitter and Facebook for up-to-the-minute updates about what's going on in your city.
+                    =image_tag "http://placehold.it/50x50"
+                    =image_tag "http://placehold.it/50x50"

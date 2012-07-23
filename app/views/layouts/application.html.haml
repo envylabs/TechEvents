@@ -33,14 +33,21 @@
 
 
 		-# Center everything else on the page in the container
-		.container
+		.container{role: "main"}
 
+			-# Flash messages/notices
+			-if flash[:notice]
+				.row
+					.span12
+						.alert.alert-info
+							%button.close{:"data-dismiss" => "alert"} ×
+							=flash[:notice]
 			
 			-# Yield all other content from views here
 			=yield
 
 		%footer
-			.container{role: "main"}
+			.container
 				.row
 					.span6
 						%p

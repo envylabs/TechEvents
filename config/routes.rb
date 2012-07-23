@@ -6,5 +6,7 @@ Techevents::Application.routes.draw do
 
   resource :user, only: [:edit, :update], controller: "user"
 
-  root :to => "home#index"
+  root :to => "events#index"
+
+  match "/home/index" => "home#index"
 end
