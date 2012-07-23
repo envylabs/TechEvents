@@ -5,6 +5,9 @@ gem 'rails', '3.2.6'
 # Authentication
 gem 'omniauth-twitter', '~> 0.0.12'
 
+# Geocoding
+gem 'geocoder', '~> 1.1.2'
+
 group :development do
 	gem 'sqlite3'
 	gem 'heroku'

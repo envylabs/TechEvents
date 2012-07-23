@@ -6,8 +6,14 @@
     <h2><%= event.name %></h2>
     <h3><%= l(event.start_time.in_time_zone("EST"), :format => :short) %> to <%= l(event.end_time.in_time_zone("EST"), :format => :short) %></h3>
     <p><%= event.description %></p>
-    <p><em><%= event.human_address %></em></p>
-    <h6>Posted by <%= link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank" %></h6>
+    <p><strong>Notes:</strong> <%= event.notes %></p>
+    <p><em><%= event.street %> in <%= event.city %> (<%= event.latitude %>, <%= event.longitude %>)</em></p>
+    <h6>
+    	Posted by <%= link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank" %>
+    	<% if user_signed_in? %>
+    		&nbsp;|&nbsp;<%= link_to 'Edit', edit_event_path(event) %>
+    	<% end %>
+    </h6>
     <br />
 <% end %>
 

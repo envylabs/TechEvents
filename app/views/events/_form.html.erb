@@ -32,16 +32,17 @@
     <%= f.datetime_select :end_time %>
   </div>
   <div class="field">
-    <%= f.label :latitude %><br />
-    <%= f.text_field :latitude %>
+    <%= f.label :original_address %><br />
+    <%= f.text_field :original_address %>
   </div>
+  <% if !@event.address.blank? %>
+    <div>
+      <p><strong>The current address is:</strong> <%= @event.address %></p>
+    </div>
+  <% end %>
   <div class="field">
-    <%= f.label :longitude %><br />
-    <%= f.text_field :longitude %>
-  </div>
-  <div class="field">
-    <%= f.label :human_address %><br />
-    <%= f.text_field :human_address %>
+    <%= f.label :notes, "Notes for arriving guests (like the floor or room number of the event)" %><br />
+    <%= f.text_area :notes %>
   </div>
   <div class="field">
     <%= f.label :newsletter %><br />
