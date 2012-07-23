@@ -29,6 +29,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.8)
+    anjlab-bootstrap-rails (2.0.4.3)
+      railties (>= 3.0)
+      sass
     arel (3.0.2)
     builder (3.0.0)
     capybara (1.1.2)
@@ -59,6 +62,12 @@ GEM
       railties (>= 3.0.0)
     ffi (1.0.11)
     geocoder (1.1.2)
+    haml (3.1.6)
+    haml-rails (0.3.4)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      haml (~> 3.0)
+      railties (~> 3.0)
     hashie (1.2.0)
     heroku (2.28.12)
       heroku-api (~> 0.2.8)
@@ -180,10 +189,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  anjlab-bootstrap-rails (~> 2.0.4.3)
   capybara (~> 1.1.2)
   coffee-rails (~> 3.2.1)
   factory_girl_rails (~> 3.5.0)
   geocoder (~> 1.1.2)
+  haml-rails (~> 0.3.4)
   heroku
   jquery-rails
   localtunnel

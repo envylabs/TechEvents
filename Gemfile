@@ -8,6 +8,10 @@ gem 'omniauth-twitter', '~> 0.0.12'
 # Geocoding
 gem 'geocoder', '~> 1.1.2'
 
+# Interface
+gem 'haml-rails', '~> 0.3.4'
+gem 'anjlab-bootstrap-rails', '~> 2.0.4.3', :require => 'bootstrap-rails'
+
 group :development do
 	gem 'sqlite3'
 	gem 'heroku'

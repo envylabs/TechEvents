@@ -1,0 +1,11 @@
+%section.row
+	.span8
+		%h1 Home
+		-if current_user
+			%pre
+				%code=current_user.to_yaml
+		
+		%br
+		%br
+
+		=link_to 'Events', events_url
