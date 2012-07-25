@@ -3,6 +3,10 @@ class Event < ActiveRecord::Base
 
 	belongs_to :user
 
+	def self.upcoming
+		self.where("start_time >= :current_time", current_time: Time.new).order(:start_time)
+	end
+
 	def address
 		[street, city, state, country].compact.join(', ')
 	end

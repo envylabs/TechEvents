@@ -1,12 +1,12 @@
 class EventsController < ApplicationController
   load_and_authorize_resource
+  skip_load_resource only: :index
 
   # GET /events
   # GET /events.json
   def index
-    # Override CanCan load and authorize with custom list method from Event model.
-    # @events is already loaded and authorized
-    # @events = Event.all
+    # Do not use CanCan load_resource here (see skip_load_resource above)
+    @events = Event.upcoming
 
     respond_to do |format|
       format.html # index.html.erb
