@@ -7,7 +7,8 @@ class Ability
     if user.admin == true
         can :manage, :all
     elsif user.admin == false
-        can [:read, :update], User
+        can :read, User
+        can :update, User, :id => user.id
         can [:read, :create], Event
         can :update, Event, :user_id => user.id
     else
