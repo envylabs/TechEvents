@@ -1,0 +1,52 @@
+=form_for :event, url: { controller: "events", action: "create" }, html: { class: "form-horizontal" } do |f|
+  -if @event.errors.any?
+    #error_explanation
+      %h2 #{pluralize(@event.errors.count, "error")} prohibited this event from being saved:
+
+    %ul
+      -@event.errors.full_messages.each do |msg|
+        %li=msg
+
+  %fieldset
+    .control-group
+      =f.label :name, "Name", :class => "control-label"
+      .controls
+        =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
+
+    .control-group
+      =f.label :description, "Description", :class => "control-label"
+      .controls
+        =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
+
+    .control-group
+      =f.label :link, "Link", :class => "control-label"
+      .controls
+        =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link", :required => "required"
+
+    / Start time & end time
+    .control-group
+      =f.label :start_time, "Start Time", :class => "control-label"
+      .controls
+        =f.datetime_select :start_time
+
+    .control-group
+      =f.label :end_time, "End Time", :class => "control-label"
+      .controls
+        =f.datetime_select :end_time
+
+    .control-group
+      =f.label :original_address, "Address", :class => "control-label"
+      .controls
+        =f.text_field :link, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+        -if !@event.address.blank?
+          %p.help-block
+            %strong The current address is:
+            =@event.address
+
+    .control-group
+      =f.label :notes, "Notes", :class => "control-label"
+      .controls
+        =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5", :required => "required"
+
+  .form-actions
+    %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Post Event"}
