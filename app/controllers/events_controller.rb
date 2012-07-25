@@ -1,8 +1,12 @@
 class EventsController < ApplicationController
+  load_and_authorize_resource
+
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    # Override CanCan load and authorize with custom list method from Event model.
+    # @events is already loaded and authorized
+    # @events = Event.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,7 +16,8 @@ class EventsController < ApplicationController
   # GET /events/new
   # GET /events/new.json
   def new
-    @event = Event.new
+    # @event is already loaded and authorized
+    # @event = Event.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -21,13 +26,15 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
-    @event = Event.find(params[:id])
+    # @event is already loaded and authorized
+    # @event = Event.find(params[:id])
   end
 
   # POST /events
   # POST /events.json
   def create
-    @event = Event.new(params[:event])
+    # @event is already loaded and authorized
+    # @event = Event.new(params[:event])
     @event.user = current_user
 
     respond_to do |format|
@@ -42,7 +49,8 @@ class EventsController < ApplicationController
   # PUT /events/1
   # PUT /events/1.json
   def update
-    @event = Event.find(params[:id])
+    # @event is already loaded and authorized
+    # @event = Event.find(params[:id])
 
     respond_to do |format|
       if @event.update_attributes(params[:event])

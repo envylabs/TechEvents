@@ -2,8 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
 
-# Authentication
+# Authentication/Authorization
 gem 'omniauth-twitter', '~> 0.0.12'
+gem 'cancan', '~> 1.6.8'
 
 # Geocoding
 gem 'geocoder', '~> 1.1.2'

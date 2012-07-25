@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 	helper_method :user_signed_in?
 	helper_method :require_authentication!
 
+	rescue_from CanCan::AccessDenied do |exception|
+		redirect_to root_url, :notice => exception.message
+	end
+
 	private
 
 	def current_user

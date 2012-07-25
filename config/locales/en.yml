@@ -2,4 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  unauthorized:
+    create:
+      event: "Please Sign in with Twitter before posting an event."
+    edit:
+      event: "You cannot edit an event that you did not create. Please ensured that you are signed in and created this event."
   hello: "Hello world"

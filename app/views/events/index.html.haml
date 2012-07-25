@@ -85,7 +85,7 @@
         /     %h6
         /         Posted by #{link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"}
             
-        /         -if user_signed_in?
+        /         -if can? :edit, event
         /             &nbsp;|&nbsp;#{link_to 'Edit', edit_event_path(event)}
 
         /     %br
