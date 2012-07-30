@@ -8,6 +8,9 @@ class EventsController < ApplicationController
     # Do not use CanCan load_resource here (see skip_load_resource above)
     @events = Event.upcoming
 
+    @events = @events.group_by{ |u| u.start_time.beginning_of_month }
+    @current_month = Time.now.strftime("%B")
+
     respond_to do |format|
       format.html # index.html.erb
     end
