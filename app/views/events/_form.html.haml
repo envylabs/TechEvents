@@ -32,12 +32,22 @@
     .control-group
       =f.label :start_time, "Start Time", :class => "control-label"
       .controls
-        =f.datetime_select :start_time
+        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10
+
+        .input-append.bootstrap-timepicker-component
+          =f.text_field :start_time_time, class: "timepicker-default input-small", size: 5, maxlength: 5
+          %span.add-on
+            %i.icon-time
 
     .control-group
       =f.label :end_time, "End Time", :class => "control-label"
       .controls
-        =f.datetime_select :end_time
+        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10
+        
+        .input-append.bootstrap-timepicker-component
+          =f.text_field :end_time_time, class: "timepicker-default input-small", size: 5, maxlength: 5
+          %span.add-on
+            %i.icon-time
 
     .control-group
       =f.label :original_address, "Address", :class => "control-label"
@@ -67,9 +77,9 @@
       %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => "Post Event"}
 
 :javascript
-  // Form validation
-  // SEE: https://github.com/twitter/bootstrap/issues/202
-  // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
+  / Form validation
+  / SEE: https://github.com/twitter/bootstrap/issues/202
+  / SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
   $('.event-form').validate({
       errorClass:'error',
       validClass:'success',
@@ -86,4 +96,8 @@
       }
   });
 
-  $('.datepicker').datepicker()
+  / Date and time pickers on page load
+  $(function() {
+    $('.datepicker').datepicker({format: 'yy-mm-dd'});
+    $('.timepicker-default').timepicker({showMeridian: false});
+  });
