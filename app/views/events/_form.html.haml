@@ -24,7 +24,7 @@
     .control-group
       =f.label :link, "Link for more info", :class => "control-label"
       .controls
-        =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link", :required => "required"
+        =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
 
     .section-header
       When and where?
@@ -52,7 +52,7 @@
     .control-group
       =f.label :original_address, "Address", :class => "control-label"
       .controls
-        =f.text_field :original_address, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+        =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
         -if !@event.address.blank?
           %p.help-block
             %strong The current address is:
@@ -64,17 +64,17 @@
     .control-group
       =f.label :notes, "Notes", :class => "control-label"
       .controls
-        =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5", :required => "required"
+        =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
 
   .section-header
     Rock and roll
 
   .row
     .span6
-      %p Your event will be posted intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+      %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
 
     .span2
-      %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => "Post Event"}
+      %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
 
 :javascript
   // Form validation
@@ -99,5 +99,5 @@
   // Date and time pickers on page load
   $(function() {
     $('.datepicker').datepicker({format: 'yy-mm-dd'});
-    $('.timepicker-default').timepicker({showMeridian: false});
+    $('.timepicker-default').timepicker({showMeridian: false, disableFocus: true, defaultTime: "value"});
   });

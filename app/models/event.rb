@@ -3,6 +3,10 @@ class Event < ActiveRecord::Base
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 
+	validates_presence_of :name
+	validates_presence_of :description
+	validates_presence_of :start_time
+	validates_presence_of :end_time
 	validates_format_of :start_time_time, :with => /\d{1,2}:\d{2}/
 	validates_format_of :end_time_time, :with => /\d{1,2}:\d{2}/
 
