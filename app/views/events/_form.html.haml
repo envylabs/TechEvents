@@ -1,4 +1,4 @@
-=form_for @event, html: { class: "form-horizontal" } do |f|
+=form_for @event, html: { class: "form-horizontal event-form" } do |f|
   -if @event.errors.any?
     #error_explanation
       %h2 #{pluralize(@event.errors.count, "error")} prohibited this event from being saved:
@@ -8,8 +8,11 @@
         %li=msg
 
   %fieldset
+    .section-header
+      What's going on?
+
     .control-group
-      =f.label :name, "Name", :class => "control-label"
+      =f.label :name, "Name of event", :class => "control-label"
       .controls
         =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
 
@@ -19,11 +22,13 @@
         =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
 
     .control-group
-      =f.label :link, "Link", :class => "control-label"
+      =f.label :link, "Link for more info", :class => "control-label"
       .controls
         =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link", :required => "required"
 
-    / Start time & end time
+    .section-header
+      When and where?
+
     .control-group
       =f.label :start_time, "Start Time", :class => "control-label"
       .controls
@@ -43,10 +48,42 @@
             %strong The current address is:
             =@event.address
 
+    .section-header
+      Anything else to add?
+
     .control-group
       =f.label :notes, "Notes", :class => "control-label"
       .controls
         =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5", :required => "required"
 
-  .form-actions
-    %input.btn.btn-primary{:name => "commit", :type => "submit", :value => "Post Event"}
+  .section-header
+    Rock and roll
+
+  .row
+    .span6
+      %p Your event will be posted intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+
+    .span2
+      %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => "Post Event"}
+
+:javascript
+  // Form validation
+  // SEE: https://github.com/twitter/bootstrap/issues/202
+  // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
+  $('.event-form').validate({
+      errorClass:'error',
+      validClass:'success',
+      errorElement:'p',
+      highlight: function (element, errorClass, validClass) { 
+        $(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
+      }, 
+      unhighlight: function (element, errorClass, validClass) { 
+        $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
+      },
+      invalidHandler: function(form, validator) {
+        $('input[type="submit"]').removeAttr('disabled');
+        $('input[type="reset"]').removeAttr('disabled');
+      }
+  });
+
+  $('.datepicker').datepicker()

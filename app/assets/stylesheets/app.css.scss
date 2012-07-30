@@ -51,6 +51,18 @@ body {
 			margin-top: -5px; } }
 }
 
+.event-form {
+	.section-header {
+	background: #d8d8d8;
+	padding: 9px 12px;
+	margin-bottom: 10px;
+	p {
+		margin: 0;
+		padding: 0; } }
+	.btn-large {
+		width: 100%; }
+}
+
 footer {
 	background: #3d6a83 url(../assets/bg-footer.png) repeat;
 	height: 80px;
