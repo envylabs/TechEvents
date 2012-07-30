@@ -1,0 +1,46 @@
+.row
+	.span8
+		-if @user.email.blank?
+			%h1 We just need your email to continue
+		-else
+			%h1 Update your email address
+
+		%hr
+
+		=form_for @user, html: { class: "form-horizontal event-form" } do |f|
+			%fieldset
+				.control-group
+					=f.label :email, "Email Address", :class => "control-label"
+					.controls
+						=f.email_field :email, value: @user.email, :class => "span6", :placeholder => "johndoe@envylabs.com", :id => "user_email", :required => "required"
+
+				%br
+
+				.row
+					.span5
+						%p We'll automatically subscribe you to the Orlando Tech Events monthly newsletter. You may opt-out at any time.
+
+					.span3
+						%input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => "Update Email Address"}
+
+		%br
+
+:javascript
+	// Form validation
+	// SEE: https://github.com/twitter/bootstrap/issues/202
+	// SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
+	$('.event-form').validate({
+			errorClass:'error',
+			validClass:'success',
+			errorElement:'p',
+			highlight: function (element, errorClass, validClass) { 
+			$(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
+		}, 
+		unhighlight: function (element, errorClass, validClass) { 
+			$(element).parents(".error").removeClass(errorClass).addClass(validClass); 
+		},
+		invalidHandler: function(form, validator) {
+			$('input[type="submit"]').removeAttr('disabled');
+			$('input[type="reset"]').removeAttr('disabled');
+		}
+	});
