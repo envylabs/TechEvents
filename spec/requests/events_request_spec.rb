@@ -4,7 +4,7 @@ describe 'Events' do
 	describe '#index' do
 		let!(:previous_event) { FactoryGirl.create :event, name: 'Previous Event', start_time: Time.new - 2.hour, end_time: Time.new - 1.hour }
 		let!(:upcoming_event) { FactoryGirl.create :event, name: 'Upcoming Event', start_time: Time.new + 1.hour, end_time: Time.new + 2.hour }
-		let!(:next_upcoming_event) { FactoryGirl.create :event, name: 'Next Upcoming Event', start_time: Time.new + 1.day + 1.hour, end_time: Time.new + 1.day + 2.hour}
+		let!(:next_upcoming_event) { FactoryGirl.create :event, name: 'Next Upcoming Event', start_time: Time.new + 1.month, end_time: Time.new + 1.month + 1.hour}
 
 		before do
 			visit events_path
@@ -28,29 +28,30 @@ describe 'Events' do
 	end
 
 	describe '#new' do
+		let(:user) { FactoryGirl.create :user }
+
+		subject { session[:post_auth_path] = nil }
+
 		before do
+			OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(:provider => user.provider, :uid => user.uid)
+
 			visit events_path
+
 			within('.post-event') do
 				find_link('Post an event').click
 			end
 		end
 
 		context 'User is not logged in' do
-			it 'does not allow the user to post an event' do
-				current_path.should == root_path
+			it 'redirects the User to "/auth/twitter", logs them in, then redirects them back to new_event_path' do
+				current_path.should == new_event_path
 			end
 		end
 
 		context 'User is logged in' do
-			let(:user) { FactoryGirl.create :user }
+			subject { session[:user_id] = user.id }
 
 			before do
-				OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(:provider => user.provider, :uid => user.uid)
-				
-				within('.navbar') do
-					find_link('Sign in').click
-				end
-
 				within('.post-event') do
 					find_link('Post an event').click
 				end

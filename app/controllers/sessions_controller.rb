@@ -4,10 +4,15 @@ class SessionsController < ApplicationController
 		session[:user_id] = user.id
 
 		if user.email.blank?
-			redirect_to edit_user_url
+			url = edit_user_path
+		elsif session[:post_auth_path] 
+			url = session[:post_auth_path]
+			session[:post_auth_path] = nil
 		else
-			redirect_to root_url, notice: "Signed in!"
+			url = root_path
 		end
+
+		redirect_to url, notice: "Signed in!"
 	end
 
 	def destroy

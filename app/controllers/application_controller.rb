@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
 	helper_method :user_signed_in?
 	helper_method :require_authentication!
 
-	rescue_from CanCan::AccessDenied do |exception|
-		redirect_to root_url, :notice => exception.message
-	end
+	rescue_from CanCan::AccessDenied, :with => :render_forbidden
 
 	private
 
@@ -21,6 +19,15 @@ class ApplicationController < ActionController::Base
 
 	def require_authentication!
 		if !user_signed_in?
+			redirect_to "/auth/twitter"
+		end
+	end
+
+	def render_forbidden(exception)
+		if user_signed_in?
+			render :template => "public/403.html", :status => 403
+		else
+			session[:post_auth_path] = request.env['PATH_INFO']
 			redirect_to "/auth/twitter"
 		end
 	end
