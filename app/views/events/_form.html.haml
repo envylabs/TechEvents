@@ -32,22 +32,15 @@
     .control-group
       =f.label :start_time, "Start Time", :class => "control-label"
       .controls
-        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10
-
-        .input-append.bootstrap-timepicker-component
-          =f.text_field :start_time_time, class: "timepicker-default input-small", size: 5, maxlength: 5
-          %span.add-on
-            %i.icon-time
+        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
+        =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
 
     .control-group
       =f.label :end_time, "End Time", :class => "control-label"
       .controls
-        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10
-        
-        .input-append.bootstrap-timepicker-component
-          =f.text_field :end_time_time, class: "timepicker-default input-small", size: 5, maxlength: 5
-          %span.add-on
-            %i.icon-time
+        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
+        =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
+        %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
 
     .control-group
       =f.label :original_address, "Address", :class => "control-label"
@@ -98,6 +91,5 @@
 
   // Date and time pickers on page load
   $(function() {
-    $('.datepicker').datepicker({format: 'yy-mm-dd'});
-    $('.timepicker-default').timepicker({showMeridian: false, disableFocus: true, defaultTime: "value"});
+    $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
   });
