@@ -7,13 +7,24 @@
                 %h6 Know of something interesting going on?
                 %a.btn.btn-large.btn-success{href: "#{new_event_path}"} Post an event
 
-            .span4
-                .info-block
-                    %h3 Subscribe to our mailing list
-                    %p Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on in Orlando this month.
-                    %form.form-inline
-                        %input.input-medium{type: "text", placeholder: "johndoe@envylabs.com"}
-                        %button.btn{type: "submit"} Subscribe
+            -if cookies[:user_subscribed] != "true" && !user_signed_in?
+                .span4
+                    .info-block
+                        .subscription-error.alert.alert-error.hide
+                            %button.close{:"data-dismiss" => "alert"} ×
+                            %span.subscription-error-message
+                                <strong>We ecnountered an error!</strong> Sorry about that! Please try subscribing again later.
+                        
+                        .mailing-list-subscribed.hide
+                            %h4 Thanks for subscribing!
+                            %p We'll send you a welcome email shortly.
+                        
+                        .mailing-list-form
+                            %h3 Subscribe to our mailing list
+                            %p Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on in Orlando this month.
+                            =form_for :subscription, :url => { :controller => "subscription", :action => "create" }, :html => { :id => "subscription-form", :class => "form-inline" }, :remote => true do |f|
+                                =f.email_field :email, :class => "input-medium", :placeholder => "johndoe@envylabs.com", :id => "subscription_email", :required => "required"
+                                %input.btn{:name => "commit", :type => "submit", :value => "Subscribe"}
 
             .span4
                 .info-block
@@ -21,3 +32,16 @@
                     %p Follow Orlando Tech Events on Twitter and Facebook for up-to-the-minute updates about what's going on in your city.
                     =image_tag "http://placehold.it/50x50"
                     =image_tag "http://placehold.it/50x50"
+
+:javascript
+    // Disable submit button on submit
+    $('#subscription-form').submit(function(){
+        $('input[type=submit]', this).attr('disabled', 'disabled');
+        $(".subscription-error").fadeOut("slow");
+    });
+
+    // Bind to ajax:error event to display feeback
+    / $("#subscription-form").bind("ajax:error", function() {
+    /     $(".subscription-error").slideDown("slow");
+    /     $('input[type="submit"]').removeAttr('disabled');
+    / });

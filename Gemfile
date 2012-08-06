@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
 
+# Mailchimp
+gem 'gibbon', '~> 0.3.5'
+
 # Authentication/Authorization
 gem 'omniauth-twitter', '~> 0.0.12'
 gem 'cancan', '~> 1.6.8'

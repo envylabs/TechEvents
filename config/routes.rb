@@ -5,6 +5,7 @@ Techevents::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout
 
   resource :user, only: [:edit, :update], controller: "user"
+  resource :subscription, only: [:create, :destroy], controller: "subscription"
 
   root :to => "events#index"
 
