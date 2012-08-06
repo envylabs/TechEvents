@@ -6,7 +6,6 @@ class SubscriptionController < ApplicationController
 
   	if subscription == true
   		puts "New subscription"
-  		cookies[:user_subscribed] = "true"
   	elsif subscription.class == Hash
   		puts "Errors returned"
   		# @error = subscription['error']
