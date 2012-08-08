@@ -45,7 +45,19 @@
     .control-group
       =f.label :original_address, "Address", :class => "control-label"
       .controls
-        =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+        -if @event.address_tbd
+          .event_original_address_container.hide
+            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+            %br
+        -else
+          .event_original_address_container
+            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+            %br
+
+        .event_address_tbd_container
+          =f.check_box :address_tbd
+          To be determined
+
         -if !@event.address.blank?
           %p.help-block
             %strong The current address is:
@@ -92,4 +104,12 @@
   // Date and time pickers on page load
   $(function() {
     $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+    $('#event_address_tbd').click(function() {
+      if($('#event_address_tbd').is(':checked')) {
+        $('.event_original_address_container').fadeOut();
+        $('#event_original_address').val('');
+      } else {
+        $('.event_original_address_container').fadeIn();
+      }
+    });
   });

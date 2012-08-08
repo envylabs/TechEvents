@@ -19,7 +19,13 @@
                                     %strong Notes: 
                                     =event.notes
                             %p
-                                %em=link_to "#{event.street} in #{event.city}", "https://maps.google.com/maps?q=#{event.address}&ll=#{event.latitude},#{event.longitude}&z=17", target: "blank"
+                                %em
+                                    -if event.address_tbd == false
+                                        =link_to "#{event.street} in #{event.city}", "https://maps.google.com/maps?q=#{event.address}&ll=#{event.latitude},#{event.longitude}&z=17", target: "blank"
+                                    -elsif event.address_tbd == nil
+                                        Address is being processed
+                                    -else
+                                        Address to be determined
                             %h6
                                 Posted by #{link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"}
                                 -if can? :edit, event

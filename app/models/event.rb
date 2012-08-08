@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	attr_accessible :street, :city, :state, :country, :description, :notes, :end_time, :end_time_date, :end_time_time, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id
+	attr_accessible :street, :city, :state, :country, :description, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 
@@ -18,13 +18,16 @@ class Event < ActiveRecord::Base
 	end
 
 	def address
-		[street, city, state, country].compact.join(', ')
+		if !address_tbd
+			[street, city, state, country].compact.join(', ')
+		else
+			nil
+		end
 	end
 
 
 	# Auto-fetch coordinates for :original_address and save them to the :latitude and :longitude columns
 	geocoded_by :original_address
-	after_validation :geocode
 
 	# Auto-fetch correct address for the :latitude and :longitude and save it to the :street, :city, :state, and :country columns.
 	# Address determined by the :original_address, provided by the user.	
@@ -36,12 +39,14 @@ class Event < ActiveRecord::Base
 			obj.country = geo.country
 		end
 	end
-	after_validation :reverse_geocode
-
 
 	# Setup datetimes
 	after_initialize :get_datetimes
 	before_validation :set_datetimes
+
+	# Geocode via dealyed_job on after_create and after_update
+	after_save :invoke_geocoder
+
 
 	private
 
@@ -57,5 +62,9 @@ class Event < ActiveRecord::Base
 	def set_datetimes
 		self.start_time = "#{self.start_time_date} #{self.start_time_time}:00"
 		self.end_time = "#{self.end_time_date} #{self.end_time_time}:00"
+	end
+
+	def invoke_geocoder
+		Delayed::Job.enqueue(EventJob.new(self.id))
 	end
 end

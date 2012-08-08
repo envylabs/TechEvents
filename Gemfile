@@ -2,6 +2,12 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
 
+gem 'pry'
+
+# DelayedJob
+gem 'daemons', '~> 1.1.8'
+gem 'delayed_job_active_record', '~> 0.3.2'
+
 # Mailchimp
 gem 'gibbon', '~> 0.3.5'
 
@@ -20,6 +26,7 @@ group :development do
 	gem 'sqlite3'
 	gem 'heroku'
 	gem 'localtunnel'
+	gem 'delayed_job_web', '~> 1.1.2'
 end
 
 group :production do

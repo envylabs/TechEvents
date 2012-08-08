@@ -14,6 +14,7 @@ FactoryGirl.define do
 		country 'United States'
 		notes 'Join us on the 20th floor'
 		newsletter false
+		address_tbd false
 		user
 	end
 end
