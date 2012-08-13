@@ -24,7 +24,7 @@
 
                         =form_for :subscription, :url => { :controller => "subscription", :action => "create" }, :html => { :id => "subscription-form", :class => "form-inline" }, :remote => true do |f|
                             =f.email_field :email, :class => "input-medium", :placeholder => "johndoe@envylabs.com", :id => "subscription_email", :required => "required"
-                            %input.btn{:name => "commit", :type => "submit", :value => "Subscribe"}
+                            %input.btn{:name => "commit", :type => "submit", :id => "subscription_submit", :value => "Subscribe"}
 
             .span4
                 .info-block

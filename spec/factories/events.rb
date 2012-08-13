@@ -16,5 +16,6 @@ FactoryGirl.define do
 		newsletter false
 		address_tbd false
 		user
+		group
 	end
 end

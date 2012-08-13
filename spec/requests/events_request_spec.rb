@@ -55,15 +55,7 @@ describe 'Events' do
 				current_path.should == new_event_path
 			end
 
-			# Waiting for propper date selector to be finished.
-			# it 'allows the user to create a valid event' do
-			# 	fill_in('Name', with: 'My Event')
-			# 	fill_in('Description', with: 'This event is .. an event!')
-			# 	fill_in('Link', with: 'http://envylabs.com/')
-			# 	# start & end
-			# 	fill_in('Address', with: '121 S Orange Ave, Orlando, FL')
-			# 	fill_in('Notes', with: 'Some notes for the event')
-			# end
+			it 'allows the user to create a valid event'
 		end
 	end
 end
