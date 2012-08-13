@@ -51,12 +51,6 @@ describe 'Events' do
 		context 'User is logged in' do
 			subject { session[:user_id] = user.id }
 
-			before do
-				within('.post-event') do
-					find_link('Post an event').click
-				end
-			end
-
 			it 'allows the user to view the form' do
 				current_path.should == new_event_path
 			end
