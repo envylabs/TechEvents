@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
 	validates_format_of :end_time_time, :with => /\d{1,2}:\d{2}/
 
 	belongs_to :user
+	belongs_to :group
 
 
 	def self.upcoming
