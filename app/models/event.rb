@@ -10,6 +10,8 @@ class Event < ActiveRecord::Base
 	validates_format_of :start_time_time, :with => /\d{1,2}:\d{2}/
 	validates_format_of :end_time_time, :with => /\d{1,2}:\d{2}/
 
+	mount_uploader :image, EventImageUploader
+
 	belongs_to :user
 	belongs_to :group
 

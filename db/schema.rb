@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813152018) do
+ActiveRecord::Schema.define(:version => 20120815195900) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20120813152018) do
     t.text     "notes"
     t.boolean  "address_tbd"
     t.integer  "group_id"
+    t.string   "image"
   end
 
   create_table "groups", :force => true do |t|
