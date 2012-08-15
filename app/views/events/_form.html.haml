@@ -14,7 +14,9 @@
     .control-group
       =f.label :group_id, "Name of group", :class => "control-label"
       .controls
-        =f.collection_select :group_id, @groups, :id, :name, { :prompt => true }, { :id => "event_group", :required => "required" }
+        =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => "Choose a group" }
+        / or
+        / %a.btn.btn-small#create_new_group Create a new group
 
     .section-header
       What's going on?

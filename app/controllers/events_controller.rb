@@ -43,7 +43,7 @@ class EventsController < ApplicationController
     # @event is already loaded and authorized
     # @event = Event.new(params[:event])
     @event.user = current_user
-    @event.group = Group.find(params[:event][:group_id])
+    @event.group = Group.find(params[:event][:group_id]) if !params[:event][:group_id].blank?
 
     respond_to do |format|
       if @event.save

@@ -13,11 +13,16 @@
                             %h3
                                 =event.name
                                 %small=event.start_time.strftime("%A, %B #{event.start_time.day.ordinalize}, %I:%m%p")
+
+                            %h4=event.hosted_by_group
+
                             %p #{event.description} #{link_to "[more info]", event.link}
+                            
                             -if !event.notes.blank?
                                 %p
                                     %strong Notes: 
                                     =event.notes
+                            
                             %p
                                 %em=event.map_link
 

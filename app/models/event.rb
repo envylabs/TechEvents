@@ -38,6 +38,10 @@ class Event < ActiveRecord::Base
 		end
 	end
 
+	def hosted_by_group
+		group ? "Hosted by #{group.name}" : "No host group"
+	end
+
 
 	# Auto-fetch coordinates for :original_address and save them to the :latitude and :longitude columns
 	geocoded_by :original_address
