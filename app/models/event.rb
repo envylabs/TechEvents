@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	attr_accessible :street, :city, :state, :country, :description, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id
+	attr_accessible :street, :city, :state, :country, :description, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id, :group_id
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 
@@ -23,6 +23,18 @@ class Event < ActiveRecord::Base
 			[street, city, state, country].compact.join(', ')
 		else
 			nil
+		end
+	end
+
+	def map_link
+		if !address_tbd
+			if !address.blank?
+				"<a href='https://maps.google.com/maps?q=#{address}&amp;ll=#{latitude},#{longitude}&amp;z=17' target='blank'>#{street} in #{city}</a>"
+			else
+				"Address is being processed"
+			end
+		else
+			"Address to be determined"
 		end
 	end
 

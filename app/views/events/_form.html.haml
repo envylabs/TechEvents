@@ -9,6 +9,14 @@
 
   %fieldset
     .section-header
+      Who's having the event?
+
+    .control-group
+      =f.label :group_id, "Name of group", :class => "control-label"
+      .controls
+        =f.collection_select :group_id, @groups, :id, :name, { :prompt => true }, { :id => "event_group", :required => "required" }
+
+    .section-header
       What's going on?
 
     .control-group
@@ -101,8 +109,9 @@
       }
   });
 
-  // Date and time pickers on page load
+  // Date pickers, jquery.chosen on page load
   $(function() {
+    $('#event_group').chosen();
     $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
     $('#event_address_tbd').click(function() {
       if($('#event_address_tbd').is(':checked')) {

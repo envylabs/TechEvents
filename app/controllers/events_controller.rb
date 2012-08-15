@@ -22,6 +22,8 @@ class EventsController < ApplicationController
     # @event is already loaded and authorized
     # @event = Event.new
 
+    @groups = Group.all
+
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -31,6 +33,8 @@ class EventsController < ApplicationController
   def edit
     # @event is already loaded and authorized
     # @event = Event.find(params[:id])
+
+    @groups = Group.all
   end
 
   # POST /events
@@ -39,6 +43,7 @@ class EventsController < ApplicationController
     # @event is already loaded and authorized
     # @event = Event.new(params[:event])
     @event.user = current_user
+    @event.group = Group.find(params[:event][:group_id])
 
     respond_to do |format|
       if @event.save
@@ -54,6 +59,7 @@ class EventsController < ApplicationController
   def update
     # @event is already loaded and authorized
     # @event = Event.find(params[:id])
+    @event.group = Group.find(params[:event][:group_id])
 
     respond_to do |format|
       if @event.update_attributes(params[:event])
