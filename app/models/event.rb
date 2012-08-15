@@ -29,7 +29,7 @@ class Event < ActiveRecord::Base
 	def map_link
 		if !address_tbd
 			if !address.blank?
-				"<a href='https://maps.google.com/maps?q=#{address}&amp;ll=#{latitude},#{longitude}&amp;z=17' target='blank'>#{street} in #{city}</a>"
+				"<a href='https://maps.google.com/maps?q=#{address}&amp;ll=#{latitude},#{longitude}&amp;z=17' target='blank'>#{street} in #{city}</a>".html_safe
 			else
 				"Address is being processed"
 			end

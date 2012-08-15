@@ -19,7 +19,7 @@
                                     %strong Notes: 
                                     =event.notes
                             %p
-                                %em=event.map_link.html_safe
+                                %em=event.map_link
 
                             %h6
                                 Posted by #{link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"}

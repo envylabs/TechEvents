@@ -40,14 +40,14 @@
     .control-group
       =f.label :start_time, "Start Time", :class => "control-label"
       .controls
-        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
-        =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
+        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
+        =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
 
     .control-group
       =f.label :end_time, "End Time", :class => "control-label"
       .controls
-        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
-        =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
+        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
+        =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
         %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
 
     .control-group
@@ -63,7 +63,7 @@
             %br
 
         .event_address_tbd_container
-          =f.check_box :address_tbd
+          =f.check_box :address_tbd, :id => "event_address_tbd"
           To be determined
 
         -if !@event.address.blank?
@@ -121,4 +121,10 @@
         $('.event_original_address_container').fadeIn();
       }
     });
+
+    // Automatically adujst end date picker after changing start time
+    $('#event_start_time_date').on("blur", function(e) {
+      $('#event_end_time_date').val(Date.parse($('#event_start_time_date').val()).add(1).days().toString('yyyy-MM-dd'));
+    });
   });
+
