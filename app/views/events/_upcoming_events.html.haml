@@ -16,7 +16,8 @@
 
                             %h4=event.hosted_by_group
 
-                            %p #{event.description} #{link_to "[more info]", event.link}
+                            -if !event.link.blank?
+                                %p #{event.description} #{link_to "[more info]", event.link}
                             
                             -if !event.notes.blank?
                                 %p

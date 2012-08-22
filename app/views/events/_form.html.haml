@@ -11,110 +11,126 @@
     .section-header
       Who's having the event?
 
-    .control-group
-      =f.label :group_id, "Name of group", :class => "control-label"
-      .controls
-        =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => "Choose a group" }
-        / or
-        / %a.btn.btn-small#create_new_group Create a new group
+    #select_group_panel
+      .control-group
+        =f.label :group_id, "Name of group", :class => "control-label"
+        .controls
+          =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => "Choose a group" }
+          or
+          %a.btn.btn-small#create_new_group Create a new group
 
-    .section-header
-      What's going on?
+    #create_group_panel.hide
+      .control-group
+        =label_tag :"group[name]", "Name of group", :class => "control-label"
+        .controls
+          =text_field_tag :"group[name]", nil, :class => "span5", :placeholder => "Orlando Ruby User Group", :id => "group_name"
 
-    .control-group
-      =f.label :name, "Name of event", :class => "control-label"
-      .controls
-        =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
+    #event_details_panel
+      .section-header
+        What's going on?
 
-    .control-group
-      =f.label :description, "Description", :class => "control-label"
-      .controls
-        =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
+      .control-group
+        =f.label :name, "Name of event", :class => "control-label"
+        .controls
+          =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
 
-    .control-group
-      =f.label :link, "Link for more info", :class => "control-label"
-      .controls
-        =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
+      .control-group
+        =f.label :description, "Description", :class => "control-label"
+        .controls
+          =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
 
-    .section-header
-      When and where?
+      .control-group
+        =f.label :link, "Link for more info", :class => "control-label"
+        .controls
+          =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
 
-    .control-group
-      =f.label :start_time, "Start Time", :class => "control-label"
-      .controls
-        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
-        =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
+      .section-header
+        When and where?
 
-    .control-group
-      =f.label :end_time, "End Time", :class => "control-label"
-      .controls
-        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
-        =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
-        %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
+      .control-group
+        =f.label :start_time, "Start Time", :class => "control-label"
+        .controls
+          =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
+          =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
 
-    .control-group
-      =f.label :original_address, "Address", :class => "control-label"
-      .controls
-        -if @event.address_tbd
-          .event_original_address_container.hide
-            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
-            %br
-        -else
-          .event_original_address_container
-            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
-            %br
+      .control-group
+        =f.label :end_time, "End Time", :class => "control-label"
+        .controls
+          =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
+          =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
+          %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
 
-        .event_address_tbd_container
-          =f.check_box :address_tbd, :id => "event_address_tbd"
-          To be determined
+      .control-group
+        =f.label :original_address, "Address", :class => "control-label"
+        .controls
+          -if @event.address_tbd
+            .event_original_address_container.hide
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              %br
+          -else
+            .event_original_address_container
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              %br
 
-        -if !@event.address.blank?
-          %p.help-block
-            %strong The current address is:
-            =@event.address
+          .event_address_tbd_container
+            =f.check_box :address_tbd, :id => "event_address_tbd"
+            To be determined
 
-    .section-header
-      Anything else to add?
+          -if !@event.address.blank?
+            %p.help-block
+              %strong The current address is:
+              =@event.address
 
-    .control-group
-      =f.label :notes, "Notes", :class => "control-label"
-      .controls
-        =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
+      .section-header
+        Anything else to add?
 
-  .section-header
-    Rock and roll
+      .control-group
+        =f.label :notes, "Notes", :class => "control-label"
+        .controls
+          =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
 
-  .row
-    .span6
-      %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+      .section-header
+        Rock and roll
 
-    .span2
-      %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
+      .row
+        .span6
+          %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+
+        .span2
+          %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
 
 :javascript
-  // Form validation
-  // SEE: https://github.com/twitter/bootstrap/issues/202
-  // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
-  $('.event-form').validate({
-      errorClass:'error',
-      validClass:'success',
-      errorElement:'p',
-      highlight: function (element, errorClass, validClass) { 
-        $(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
-      }, 
-      unhighlight: function (element, errorClass, validClass) { 
-        $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
-      },
-      invalidHandler: function(form, validator) {
-        $('input[type="submit"]').removeAttr('disabled');
-        $('input[type="reset"]').removeAttr('disabled');
-      }
-  });
-
-  // Date pickers, jquery.chosen on page load
+  // On page load
   $(function() {
-    $('#event_group').chosen();
+    // Form validation
+    // SEE: https://github.com/twitter/bootstrap/issues/202
+    // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
+    $('.event-form').validate({
+        errorClass:'error',
+        validClass:'success',
+        errorElement:'p',
+        highlight: function (element, errorClass, validClass) { 
+          $(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
+        }, 
+        unhighlight: function (element, errorClass, validClass) { 
+          $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
+        },
+        invalidHandler: function(form, validator) {
+          $('input[type="submit"]').removeAttr('disabled');
+          $('input[type="reset"]').removeAttr('disabled');
+        }
+    });
+
+    // Misc setup
+    $('#event_group').chosen().change(function() {
+      fadeInEventDetails();
+    });
     $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+
+    // Aesthetics
+    $('#event_details_panel').hide();
+
+    // Address TBD checkbox
     $('#event_address_tbd').click(function() {
       if($('#event_address_tbd').is(':checked')) {
         $('.event_original_address_container').fadeOut();
@@ -124,9 +140,35 @@
       }
     });
 
-    // Automatically adujst end date picker after changing start time
+    // Automatically adujst end date and time after changing start date and time
     $('#event_start_time_date').on("blur", function(e) {
-      $('#event_end_time_date').val(Date.parse($('#event_start_time_date').val()).add(1).days().toString('yyyy-MM-dd'));
+      $('#event_end_time_date').val($('#event_start_time_date').val());
+    });
+
+    $('#event_start_time_time').on("keyup", function(e) {
+      $('#event_end_time_time').val(Date.parse($('#event_start_time_time').val()).add(1).hours().toString('HH:mm'));
+    });
+
+    // Group creation logic
+    $('#create_new_group').click(function() {
+      $('#select_group_panel').slideUp();
+      $('#create_group_panel').fadeIn();
+      $('#group_name').attr("required", "required");
+    });
+
+    // Pretty effects
+    $('#event_group').blur(function() {
+      fadeInEventDetails();
+    });
+
+    $('#group_name').keyup(function() {
+      fadeInEventDetails();
     });
   });
+
+  // Fades in #event_details_panel
+  function fadeInEventDetails() {
+    $details = $('#event_details_panel');
+    if ( $details.is(':hidden') ) { return $details.fadeIn(1000); }
+  }
 

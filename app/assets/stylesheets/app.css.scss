@@ -8,9 +8,35 @@
 
 body {
   background-color: #fff;
-  background-image: url(/assets/body_bg.png);
+  background-image: url(../assets/body_bg.png);
   position: relative;
   padding-top: 60px; }
+
+a {
+	&.social-icon {
+		background: #c6c6c6 url(../assets/social-sprite.png) no-repeat;
+		width: 50px;
+		height: 50px;
+		display: inline-block;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		color: transparent;
+		transition: background-color 0.2s;
+		-moz-transition: background-color 0.2s;
+		-webkit-transition: background-color 0.2s;
+		-o-transition: background-color 0.2s;
+	}
+	&.social-icon-tw {
+		background-position: 0 0;
+		&:hover { background-color: #00aced; }
+	}
+	&.social-icon-fb {
+		background-position: 0 -50px;
+		margin-left: 5px;
+		&:hover { background-color: #3b5998; }
+	}
+}
 
 .sidebar {
 	.post-event {

@@ -43,7 +43,14 @@ class EventsController < ApplicationController
     # @event is already loaded and authorized
     # @event = Event.new(params[:event])
     @event.user = current_user
-    @event.group = Group.find(params[:event][:group_id]) if !params[:event][:group_id].blank?
+
+    if !params[:event][:group_id].blank?
+      @event.group = Group.find(params[:event][:group_id])
+    elsif !params[:group][:name].blank?
+      @event.group = Group.create({name: params[:group][:name]})
+    else
+      @event.group = nil
+    end
 
     respond_to do |format|
       if @event.save
@@ -59,7 +66,7 @@ class EventsController < ApplicationController
   def update
     # @event is already loaded and authorized
     # @event = Event.find(params[:id])
-    @event.group = Group.find(params[:event][:group_id])
+    @event.group = Group.find(params[:event][:group_id]) if !params[:event][:group_id].blank?
 
     respond_to do |format|
       if @event.update_attributes(params[:event])
