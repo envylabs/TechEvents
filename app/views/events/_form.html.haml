@@ -156,19 +156,36 @@
       $('#group_name').attr("required", "required");
     });
 
-    // Pretty effects
-    $('#event_group').blur(function() {
-      fadeInEventDetails();
+    // Event group selection logic
+    $('#event_group').change(function() {
+      var groupLastEventUrl = "/groups/" + $('#event_group').val() + "/last_event.json";
+
+      $.get(groupLastEventUrl, function(data) {
+        console.log(data);
+        // Populate form with previous event's data
+        $('#event_name').val(data['name']);
+        $('#event_description').val(data['description']);
+        $('#event_link').val(data['link']);
+        $('#event_start_time_date').val(data['start_date']);
+        $('#event_start_time_time').val(data['start_time']);
+        $('#event_end_time_date').val(data['end_date']);
+        $('#event_end_time_time').val(data['end_time']);
+        $('#event_original_address').val(data['address']);
+        $('#event_notes').val(data['notes']);
+
+        // Fade in the event details
+        fadeInEventDetails();
+      });
     });
 
+    // Pretty effects
     $('#group_name').keyup(function() {
       fadeInEventDetails();
     });
   });
 
-  // Fades in #event_details_panel
+  // Fades in #event_details_panel, if it's already visible, flash it
   function fadeInEventDetails() {
     $details = $('#event_details_panel');
     if ( $details.is(':hidden') ) { return $details.fadeIn(1000); }
   }
-

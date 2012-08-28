@@ -1,5 +1,6 @@
 Techevents::Application.routes.draw do
 	resources :events, :except => [:show, :destroy]
+	match "/groups/:id/last_event" => "groups#last_event", format: :json
 
 	match "/auth/:provider/callback" => "sessions#create", as: :sessions_create
 	match "/signout" => "sessions#destroy", :as => :signout
