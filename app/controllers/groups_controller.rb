@@ -5,13 +5,19 @@ class GroupsController < ApplicationController
 		last_event = Group.find(params[:id]).events.last
 		authorize! :show, last_event
 
-		# Build a JSON response and deliver it
-		new_start_time =  Time.parse(last_event.start_time.to_s) + 1.month
-		new_end_time = Time.parse(last_event.end_time.to_s) + 1.month
+		# Process all the time and date stuff
+		today = Time.now
 
+		start_parse = Time.parse(last_event.start_time.to_s)
+		start_parse > today ? (new_start_time = start_parse + 1.month) : (new_start_time = today)
+
+		end_parse = Time.parse(last_event.end_time.to_s)
+		start_parse > today ? (new_end_time = end_parse + 1.month) : (new_end_time = today + 1.day)
+
+		# Build a JSON response and deliver it
 		response = {
 			origin: {
-				id:					last_event.id,
+				id:			last_event.id,
 			},
 			name:			last_event.name,
 			description:	last_event.description,

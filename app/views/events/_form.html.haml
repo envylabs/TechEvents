@@ -151,30 +151,59 @@
 
     // Group creation logic
     $('#create_new_group').click(function() {
-      $('#select_group_panel').slideUp();
+      //$('#select_group_panel').slideUp();
       $('#create_group_panel').fadeIn();
       $('#group_name').attr("required", "required");
+      $('#event_group').val('');
     });
 
     // Event group selection logic
+    // We have to make this variable global
+    var lastGroupEvent = null;
+
     $('#event_group').change(function() {
+      // Setup some variables
+      // Determine the URL for the Ajax request
       var groupLastEventUrl = "/groups/" + $('#event_group').val() + "/last_event.json";
 
-      $.get(groupLastEventUrl, function(data) {
-        console.log(data);
-        // Populate form with previous event's data
-        $('#event_name').val(data['name']);
-        $('#event_description').val(data['description']);
-        $('#event_link').val(data['link']);
-        $('#event_start_time_date').val(data['start_date']);
-        $('#event_start_time_time').val(data['start_time']);
-        $('#event_end_time_date').val(data['end_date']);
-        $('#event_end_time_time').val(data['end_time']);
-        $('#event_original_address').val(data['address']);
-        $('#event_notes').val(data['notes']);
+      // Add all of the elements to update to a JS array 
+      var elementsToUpdate = new Array();
+        elementsToUpdate['name']          = $('#event_name');
+        elementsToUpdate['description']   = $('#event_description');
+        elementsToUpdate['link']          = $('#event_link');
+        elementsToUpdate['start_date']    = $('#event_start_time_date');
+        elementsToUpdate['start_time']    = $('#event_start_time_time');
+        elementsToUpdate['end_date']      = $('#event_end_time_date');
+        elementsToUpdate['end_time']      = $('#event_end_time_time');
+        elementsToUpdate['address']       = $('#event_original_address');
+        elementsToUpdate['notes']         = $('#event_notes');
+
+      // Populate form with appropriate data
+      $.get(groupLastEventUrl, function(data) {                
+        // If the form has a group selected, carefully overwrite values in form, otherwise proceed carelessly
+        if (lastGroupEvent) {
+          // Update only ones which haven't been changed from their original state since there's content in the form
+          for (key in elementsToUpdate) {
+            // We'll be using this element a lot, so we set it to a variable
+            element = elementsToUpdate[key];
+
+            // Update if the feild is not default/blank
+            if (element.val() == lastGroupEvent[key] || element.val() == null) {
+              element.val(data[key]);
+            }
+          };
+        } else {
+          // Update all of the fields since there's nothing in the form
+          for (key in elementsToUpdate) {
+            elementsToUpdate[key].val(data[key]);
+          };
+        }
 
         // Fade in the event details
         fadeInEventDetails();
+
+        // Save last group's last event
+        lastGroupEvent = data;
       });
     });
 
