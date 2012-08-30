@@ -79,16 +79,22 @@ a {
 
 .event-form {
 	.section-header {
-	background: #d8d8d8;
-	padding: 9px 12px;
-	margin-bottom: 10px;
-	p {
-		margin: 0;
-		padding: 0; } }
+		background: #d8d8d8;
+		padding: 9px 12px;
+		margin-bottom: 10px;
+		p {
+			margin: 0;
+			padding: 0; } }
 	.btn-large {
 		width: 100%; }
 	.add-on {
 		margin-left: -5px; }
+	.map_container {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		#map_canvas {
+			height: 200px;
+			width: 380px; } }
 }
 
 footer {

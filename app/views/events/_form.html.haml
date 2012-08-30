@@ -65,12 +65,16 @@
         .controls
           -if @event.address_tbd
             .event_original_address_container.hide
-              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
               %br
           -else
             .event_original_address_container
-              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
               %br
+
+          .map_container.hide
+            %em Preview:
+            #map_canvas
 
           .event_address_tbd_container
             =f.check_box :address_tbd, :id => "event_address_tbd"
@@ -99,122 +103,11 @@
         .span2
           %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
 
-:javascript
-  // On page load
-  $(function() {
-    // Form validation
-    // SEE: https://github.com/twitter/bootstrap/issues/202
-    // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
-    $('.event-form').validate({
-        errorClass:'error',
-        validClass:'success',
-        errorElement:'p',
-        highlight: function (element, errorClass, validClass) { 
-          $(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
-        }, 
-        unhighlight: function (element, errorClass, validClass) { 
-          $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
-        },
-        invalidHandler: function(form, validator) {
-          $('input[type="submit"]').removeAttr('disabled');
-          $('input[type="reset"]').removeAttr('disabled');
-        }
-    });
+-if controller.action_name == "new"
+  :javascript
+    var RouteInfo = {'create_logic': true};
+-else
+  :javascript
+    var RouteInfo = {'create_logic': false};
 
-    // Misc setup
-    $('#event_group').chosen().change(function() {
-      fadeInEventDetails();
-    });
-    $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
-
-    // Aesthetics
-    $('#event_details_panel').hide();
-
-    // Address TBD checkbox
-    $('#event_address_tbd').click(function() {
-      if($('#event_address_tbd').is(':checked')) {
-        $('.event_original_address_container').fadeOut();
-        $('#event_original_address').val('');
-      } else {
-        $('.event_original_address_container').fadeIn();
-      }
-    });
-
-    // Automatically adujst end date and time after changing start date and time
-    $('#event_start_time_date').on("blur", function(e) {
-      $('#event_end_time_date').val($('#event_start_time_date').val());
-    });
-
-    $('#event_start_time_time').on("keyup", function(e) {
-      $('#event_end_time_time').val(Date.parse($('#event_start_time_time').val()).add(1).hours().toString('HH:mm'));
-    });
-
-    // Group creation logic
-    $('#create_new_group').click(function() {
-      //$('#select_group_panel').slideUp();
-      $('#create_group_panel').fadeIn();
-      $('#group_name').attr("required", "required");
-      $('#event_group').val('');
-    });
-
-    // Event group selection logic
-    // We have to make this variable global
-    var lastGroupEvent = null;
-
-    $('#event_group').change(function() {
-      // Setup some variables
-      // Determine the URL for the Ajax request
-      var groupLastEventUrl = "/groups/" + $('#event_group').val() + "/last_event.json";
-
-      // Add all of the elements to update to a JS array 
-      var elementsToUpdate = new Array();
-        elementsToUpdate['name']          = $('#event_name');
-        elementsToUpdate['description']   = $('#event_description');
-        elementsToUpdate['link']          = $('#event_link');
-        elementsToUpdate['start_date']    = $('#event_start_time_date');
-        elementsToUpdate['start_time']    = $('#event_start_time_time');
-        elementsToUpdate['end_date']      = $('#event_end_time_date');
-        elementsToUpdate['end_time']      = $('#event_end_time_time');
-        elementsToUpdate['address']       = $('#event_original_address');
-        elementsToUpdate['notes']         = $('#event_notes');
-
-      // Populate form with appropriate data
-      $.get(groupLastEventUrl, function(data) {                
-        // If the form has a group selected, carefully overwrite values in form, otherwise proceed carelessly
-        if (lastGroupEvent) {
-          // Update only ones which haven't been changed from their original state since there's content in the form
-          for (key in elementsToUpdate) {
-            // We'll be using this element a lot, so we set it to a variable
-            element = elementsToUpdate[key];
-
-            // Update if the feild is not default/blank
-            if (element.val() == lastGroupEvent[key] || element.val() == null) {
-              element.val(data[key]);
-            }
-          };
-        } else {
-          // Update all of the fields since there's nothing in the form
-          for (key in elementsToUpdate) {
-            elementsToUpdate[key].val(data[key]);
-          };
-        }
-
-        // Fade in the event details
-        fadeInEventDetails();
-
-        // Save last group's last event
-        lastGroupEvent = data;
-      });
-    });
-
-    // Pretty effects
-    $('#group_name').keyup(function() {
-      fadeInEventDetails();
-    });
-  });
-
-  // Fades in #event_details_panel, if it's already visible, flash it
-  function fadeInEventDetails() {
-    $details = $('#event_details_panel');
-    if ( $details.is(':hidden') ) { return $details.fadeIn(1000); }
-  }
+=javascript_include_tag "events/form"
