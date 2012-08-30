@@ -33,15 +33,4 @@
                     %a.social-icon.social-icon-tw{href: "http://twitter.com/OTechEvents"}
                     %a.social-icon.social-icon-fb{href: "http://www.facebook.com/OrlandoTechEvents"}
 
-:javascript
-    // Disable submit button on submit
-    $('#subscription-form').submit(function(){
-        $('input[type=submit]', this).attr('disabled', 'disabled');
-        $(".subscription-error").fadeOut("slow");
-    });
-
-    // Bind to ajax:error event to display feeback
-    // $("#subscription-form").bind("ajax:error", function() {
-    //     $(".subscription-error").slideDown("slow");
-    //     $('input[type="submit"]').removeAttr('disabled');
-    // });
+=javascript_include_tag "events/index"
