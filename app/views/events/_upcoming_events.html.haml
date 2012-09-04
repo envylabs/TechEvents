@@ -8,24 +8,25 @@
             .row
                 .span8.event-entry
                     .row
-                        .span2=image_tag "http://placehold.it/200x200"
+                        .span2=image_tag event.image.url
                         .span6
                             %h3
                                 =event.name
                                 %small=event.start_time.strftime("%A, %B #{event.start_time.day.ordinalize}, %I:%m%p")
-                            %p #{event.description} #{link_to "[more info]", event.link}
+
+                            %h4=event.hosted_by_group
+
+                            -if !event.link.blank?
+                                %p #{event.description} #{link_to "[more info]", event.link}
+                            
                             -if !event.notes.blank?
                                 %p
                                     %strong Notes: 
                                     =event.notes
+                            
                             %p
-                                %em
-                                    -if event.address_tbd == false
-                                        =link_to "#{event.street} in #{event.city}", "https://maps.google.com/maps?q=#{event.address}&ll=#{event.latitude},#{event.longitude}&z=17", target: "blank"
-                                    -elsif event.address_tbd == nil
-                                        Address is being processed
-                                    -else
-                                        Address to be determined
+                                %em=event.map_link
+
                             %h6
                                 Posted by #{link_to "@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"}
                                 -if can? :edit, event

@@ -15,6 +15,11 @@ gem 'gibbon', '~> 0.3.5'
 gem 'omniauth-twitter', '~> 0.0.12'
 gem 'cancan', '~> 1.6.8'
 
+# Image Uploads
+gem 'fog', '~> 1.3.1'
+gem 'mini_magick', '~> 3.4'
+gem 'carrierwave', '~> 0.6.2'
+
 # Geocoding
 gem 'geocoder', '~> 1.1.2'
 
@@ -24,7 +29,6 @@ gem 'anjlab-bootstrap-rails', '~> 2.0.4.3', :require => 'bootstrap-rails'
 
 group :development do
 	gem 'sqlite3'
-	gem 'heroku'
 	gem 'localtunnel'
 	gem 'delayed_job_web', '~> 1.1.2'
 end

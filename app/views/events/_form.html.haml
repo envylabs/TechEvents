@@ -1,4 +1,4 @@
-=form_for @event, html: { class: "form-horizontal event-form" } do |f|
+=form_for @event, html: { class: "form-horizontal event-form", multipart: true } do |f|
   -if @event.errors.any?
     #error_explanation
       %h2 #{pluralize(@event.errors.count, "error")} prohibited this event from being saved:
@@ -9,107 +9,115 @@
 
   %fieldset
     .section-header
-      What's going on?
+      Who's having the event?
 
-    .control-group
-      =f.label :name, "Name of event", :class => "control-label"
-      .controls
-        =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
+    #select_group_panel
+      .control-group
+        =f.label :group_id, "Name of group", :class => "control-label"
+        .controls
+          =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => "Choose a group" }
+          or
+          %a.btn.btn-small#create_new_group Create a new group
 
-    .control-group
-      =f.label :description, "Description", :class => "control-label"
-      .controls
-        =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
+    #create_group_panel.hide
+      .control-group
+        =label_tag :"group[name]", "Name of group", :class => "control-label"
+        .controls
+          =text_field_tag :"group[name]", nil, :class => "span5", :placeholder => "Orlando Ruby User Group", :id => "group_name"
 
-    .control-group
-      =f.label :link, "Link for more info", :class => "control-label"
-      .controls
-        =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
+    #event_details_panel
+      .section-header
+        What's going on?
 
-    .section-header
-      When and where?
+      .control-group
+        =f.label :name, "Name of event", :class => "control-label"
+        .controls
+          =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
 
-    .control-group
-      =f.label :start_time, "Start Time", :class => "control-label"
-      .controls
-        =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
-        =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
+      .control-group
+        =f.label :description, "Description", :class => "control-label"
+        .controls
+          =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
 
-    .control-group
-      =f.label :end_time, "End Time", :class => "control-label"
-      .controls
-        =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :required => "required"
-        =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :required => "required"
-        %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
+      .control-group
+        =f.label :image, "Image", :class => "control-label"
+        .controls
+          =image_tag @event.image.url, id: "event_image_preview"
+          %br
+          %br
+          =f.file_field :image, :id => "event_image"
+          =f.hidden_field :image_cache
 
-    .control-group
-      =f.label :original_address, "Address", :class => "control-label"
-      .controls
-        -if @event.address_tbd
-          .event_original_address_container.hide
-            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
-            %br
-        -else
-          .event_original_address_container
-            =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "121 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
-            %br
+      .control-group
+        =f.label :link, "Link for more info", :class => "control-label"
+        .controls
+          =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
 
-        .event_address_tbd_container
-          =f.check_box :address_tbd
-          To be determined
+      .section-header
+        When and where?
 
-        -if !@event.address.blank?
-          %p.help-block
-            %strong The current address is:
-            =@event.address
+      .control-group
+        =f.label :start_time, "Start Time", :class => "control-label"
+        .controls
+          =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
+          =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
 
-    .section-header
-      Anything else to add?
+      .control-group
+        =f.label :end_time, "End Time", :class => "control-label"
+        .controls
+          =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
+          =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
+          %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
 
-    .control-group
-      =f.label :notes, "Notes", :class => "control-label"
-      .controls
-        =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
+      .control-group
+        =f.label :original_address, "Address", :class => "control-label"
+        .controls
+          -if @event.address_tbd
+            .event_original_address_container.hide
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              %br
+          -else
+            .event_original_address_container
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              %br
 
-  .section-header
-    Rock and roll
+          .map_container.hide
+            %em Preview:
+            #map_canvas
 
-  .row
-    .span6
-      %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+          .event_address_tbd_container
+            =f.check_box :address_tbd, :id => "event_address_tbd"
+            To be determined
 
-    .span2
-      %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
+          -if !@event.address.blank?
+            %p.help-block
+              %strong The current address is:
+              =@event.address
 
-:javascript
-  // Form validation
-  // SEE: https://github.com/twitter/bootstrap/issues/202
-  // SEE: Edit starting on line 648 of assets/javascripts/jquery.validate.js to make help-block show up.
-  $('.event-form').validate({
-      errorClass:'error',
-      validClass:'success',
-      errorElement:'p',
-      highlight: function (element, errorClass, validClass) { 
-        $(element).parents("div[class='control-group']").addClass(errorClass).removeClass(validClass); 
-      }, 
-      unhighlight: function (element, errorClass, validClass) { 
-        $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
-      },
-      invalidHandler: function(form, validator) {
-        $('input[type="submit"]').removeAttr('disabled');
-        $('input[type="reset"]').removeAttr('disabled');
-      }
-  });
+      .section-header
+        Anything else to add?
 
-  // Date and time pickers on page load
-  $(function() {
-    $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
-    $('#event_address_tbd').click(function() {
-      if($('#event_address_tbd').is(':checked')) {
-        $('.event_original_address_container').fadeOut();
-        $('#event_original_address').val('');
-      } else {
-        $('.event_original_address_container').fadeIn();
-      }
-    });
-  });
+      .control-group
+        =f.label :notes, "Notes", :class => "control-label"
+        .controls
+          =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
+
+      .section-header
+        Rock and roll
+
+      .row
+        .span6
+          %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+
+        .span2
+          %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
+
+-if controller.action_name == "new"
+  :javascript
+    var RouteInfo = {'create_logic': true};
+-else
+  :javascript
+    var RouteInfo = {'create_logic': false};
+
+%script{src: "http://maps.google.com/maps/api/js?sensor=true", type: "text/javascript"}
+=javascript_include_tag "events/form"
