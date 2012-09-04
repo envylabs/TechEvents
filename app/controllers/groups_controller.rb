@@ -21,6 +21,7 @@ class GroupsController < ApplicationController
 			},
 			name:			last_event.name,
 			description:	last_event.description,
+			image: 			last_event.image.url,
 			link:			last_event.link,
 			address:		last_event.address,
 			notes:			last_event.notes,

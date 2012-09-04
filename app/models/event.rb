@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	attr_accessible :street, :city, :state, :country, :description, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id, :group_id, :group_name
+	attr_accessible :street, :city, :state, :country, :description, :image, :image_cache, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id, :group_id, :group_name
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 

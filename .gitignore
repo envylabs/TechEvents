@@ -17,3 +17,6 @@
 
 # Ignore API keys
 /config/keys.yml
+
+# Ignore Temp Uploads
+/public/uploads

@@ -80,15 +80,16 @@ $(function() {
 
       // Add all of the elements to update to a JS array 
       var elementsToUpdate = new Array();
-        elementsToUpdate['name']          = $('#event_name');
-        elementsToUpdate['description']   = $('#event_description');
-        elementsToUpdate['link']          = $('#event_link');
-        elementsToUpdate['start_date']    = $('#event_start_time_date');
-        elementsToUpdate['start_time']    = $('#event_start_time_time');
-        elementsToUpdate['end_date']      = $('#event_end_time_date');
-        elementsToUpdate['end_time']      = $('#event_end_time_time');
-        elementsToUpdate['address']       = $('#event_original_address');
-        elementsToUpdate['notes']         = $('#event_notes');
+        elementsToUpdate['name']              = $('#event_name');
+        elementsToUpdate['description']       = $('#event_description');
+        elementsToUpdate['image']             = $('#event_image')
+        elementsToUpdate['link']              = $('#event_link');
+        elementsToUpdate['start_date']        = $('#event_start_time_date');
+        elementsToUpdate['start_time']        = $('#event_start_time_time');
+        elementsToUpdate['end_date']          = $('#event_end_time_date');
+        elementsToUpdate['end_time']          = $('#event_end_time_time');
+        elementsToUpdate['address']           = $('#event_original_address');
+        elementsToUpdate['notes']             = $('#event_notes');
 
       // Populate form with appropriate data
       $.get(groupLastEventUrl, function(data) {                
@@ -110,6 +111,9 @@ $(function() {
             elementsToUpdate[key].val(data[key]);
           };
         }
+
+        // Update image preview
+        $('#event_image_preview').attr('src', data['image']);
 
         // Run Google Maps preview if address was filled in
         if (elementsToUpdate['address'].val() != "") {
@@ -144,6 +148,34 @@ function runMapPreview() {
   $('.map_container').fadeIn();
 }
 
+// Image upload preview logic
+function handleFileSelect(evt) {
+  var files = evt.target.files; // FileList object
+
+  // Loop through the FileList and render image files as thumbnails
+  for (var i = 0, f; f = files[i]; i++) {
+
+    // Only process image files
+    if (!f.type.match('image.*')) {
+      continue;
+    }
+
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // Render image
+        document.getElementById('event_image_preview').src = e.target.result
+      };
+    })(f);
+
+    // Read in the image file as a data URL
+    reader.readAsDataURL(f);
+  }
+}
+document.getElementById('event_image').addEventListener('change', handleFileSelect, false);
+
 // Google Maps preview setup code
 var geocoder;
 var map;
@@ -169,7 +201,7 @@ function codeGoogleMapAddress() {
           position: results[0].geometry.location
       });
     } else {
-      alert("Geocode was not successful for the following reason: " + status);
+      console.log("Geocode was not successful for the following reason: " + status);
     }
   });
 }
