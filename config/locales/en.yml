@@ -2,9 +2,111 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  site:
+    name: "Orlando Tech Events"
+    social:
+      twitter: "OTechEvents"
+      facebook: "OrlandoTechEvents"
+
+  header:
+    sign_in: "Sign in with Twitter"
+    sign_out: "Sign out"
+
+  events_index:
+    sidebar:
+      post_event:
+        hook: "Know of something interesting going on?"
+        button: "Post an event"
+      mailing_list:
+        header: "Subscribe to our mailing list"
+        description_html: "Never miss a meetup again! Sign up for our newsletter to stay up to date on all of the tech events going on near you this month."
+        form:
+          subscribe: "Subscribe"
+        success:
+          header: "Thanks for subscribing!"
+          description_html: "We'll send you a welcome email shortly."
+        error:
+          description_html: "<strong>We ecnountered an error!</strong> Sorry about that! Please try subscribing again later."
+      social_media:
+        header: "Never miss an event"
+        description_html: "Follow us on Twitter and Facebook for up-to-the-minute updates about what's going on in your city."
+
+  events_upcoming_events:
+    title: "Upcoming Events"
+    date_header:
+      this_month: "This Month"
+    event_entry:
+      add_to_calendar: "Add to Calendar"
+      hosted_by: "Hosted by %{name}"
+      no_host: "No host group"
+      more_info: "[more info]"
+      notes_html: 'Notes: %{notes}'
+      address:
+        link_html: '<a href="%{url}" target="blank">%{street} in %{city}</a>'
+        processing: 'Address is being processed'
+        tbd: 'Address to be determined'
+      posted_by_html: 'Posted by %{user}'
+      edit: 'Edit'
+
+  events_new:
+    post_event: "Post an Event"
+
+  events_edit:
+    editting_event: "Editting \"%{name}\""
+
+  events_form:
+    section_header:
+      who: "Who's having the event?"
+      what: "What's going on?"
+      when: "When and where?"
+      anything_else: "Anything else to add?"
+      rock_and_roll: "Rock and roll"
+    fields:
+      group:
+        label: "Name of group"
+        placeholder: "Choose a group"
+        create_group_button: "Create a new group"
+      new_group:
+        label: "Name of group"
+        placeholder: "Orlando Ruby User Group"
+      name:
+        label: "Name of event"
+        placeholder: "Codeschool Beta"
+      description:
+        label: "Description"
+        placeholder: "Mauris iaculis porttitor posuere. Praesent id metus massa."
+      image:
+        label: "Image"
+      link:
+        label: "Link for more info"
+        placeholder: "http://envylabs.com/"
+      time:
+        start_time:
+          label: "Start Time"
+        end_time:
+          label: "End Time"
+        note_html: "<strong>Note:</strong> Please enter start and end times in 24 hour format"
+      address:
+        label: "Address"
+        placeholder: "189 S Orange Ave, Orlando, FL"
+        tbd: "To be determined"
+        current_address_html: "<strong>The current address is:</strong> %{address}"
+      notes:
+        label: "Notes"
+        placeholder: "Mauris iaculis porttitor posuere. Praesent id metus massa."
+    messages:
+      event_will_be_posted: "Your event will be posted intstantly. Showcased events found in the Tech Events newsletter, however, must be approved prior to display."
+      event_will_be_updated: "Your event will be updated intstantly. Showcased events found in the Tech Events newsletter, however, must be approved prior to display."
+    buttons:
+      update: "Update Event"
+      post: "Post Event"
+
+  footer:
+    oss_html: "TechEvents.us is <a href='http://github.com/envylabs/TechEvents' target='_blank'>open-source software</a>."
+    copyright_html: "Copyright &copy; 2012 Envy Labs, LLC. All rights reserved."
+
   unauthorized:
     create:
       event: "Please Sign in with Twitter before posting an event."
     edit:
       event: "You cannot edit an event that you did not create. Please ensured that you are signed in and created this event."
-  hello: "Hello world"

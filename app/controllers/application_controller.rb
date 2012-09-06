@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
 	rescue_from CanCan::AccessDenied, :with => :render_forbidden
 
+	before_filter :set_locale
+
 	private
 
 	def current_user
@@ -48,5 +50,9 @@ class ApplicationController < ActionController::Base
 
 	  # Finally, join the parts with a period and return the result
 	  return fn.join '.'
+	end
+
+	def set_locale
+		I18n.locale = params[:locale] || I18n.default_locale
 	end
 end

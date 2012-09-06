@@ -31,17 +31,29 @@ class Event < ActiveRecord::Base
 	def map_link
 		if !address_tbd
 			if !address.blank?
-				"<a href='https://maps.google.com/maps?q=#{address}&amp;ll=#{latitude},#{longitude}&amp;z=17' target='blank'>#{street} in #{city}</a>".html_safe
+				I18n.t 'events_upcoming_events.event_entry.address.link_html', url: "https://maps.google.com/maps?q=#{address}&amp;ll=#{latitude},#{longitude}&amp;z=17", street: street, city: city
 			else
-				"Address is being processed"
+				I18n.t 'events_upcoming_events.event_entry.address.processing'
 			end
 		else
-			"Address to be determined"
+			I18n.t 'events_upcoming_events.event_entry.address.tbd' 
 		end
 	end
 
 	def hosted_by_group
-		group ? "Hosted by #{group.name}" : "No host group"
+		group ? I18n.t("events_upcoming_events.event_entry.hosted_by", name: group.name) : I18n.t("events_upcoming_events.event_entry.no_host")
+	end
+
+	def to_ical
+		RiCal.Calendar do |calendar|
+			calendar.event do |details|
+				details.summary     = self.name
+				details.description = "Description:\n" + self.description + "\n\nNotes:\n" + self.notes
+				details.dtstart     = Time.parse(self.start_time.to_s).getutc
+				details.dtend       = Time.parse(self.end_time.to_s).getutc
+				details.location    = self.address
+			end
+		end
 	end
 
 

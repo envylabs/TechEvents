@@ -7,8 +7,7 @@
 -------------------------------------------------- */
 
 body {
-  background-color: #fff;
-  background-image: url(../assets/body_bg.png);
+  background: #fff url(../assets/bg-body.png) repeat;
   position: relative;
   padding-top: 60px; }
 
@@ -106,6 +105,23 @@ footer {
 	height: 80px;
 	padding: 40px 15px 10px 15px;
 	-webkit-box-shadow: inset 0px 3px 15px rgba(0,0,0,0.4);
+}
+
+footer #copyright a {
+	color: rgba(255, 255, 255, 0.6);
+	transition: color 0.5s;
+	-moz-transition: color 0.5s;
+	-webkit-transition: color 0.5s;
+	-o-transition: color 0.5s;
+}
+
+footer #copyright a:hover {
+	color: rgba(255, 255, 255, 1.0);
+	text-decoration: none;
+	transition: color 0.5s;
+	-moz-transition: color 0.5s;
+	-webkit-transition: color 0.5s;
+	-o-transition: color 0.5s;
 }
 
 footer p {

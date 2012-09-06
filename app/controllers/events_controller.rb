@@ -89,22 +89,12 @@ class EventsController < ApplicationController
 
   # GET /events/1/calendar
   def calendar
-    # Load the event
+    # Load the event's iCal object
     event = Event.find(params[:id])
+    cal = event.to_ical
 
     # Create a safe filename for the event's ics file
     filename = sanitize_filename(event.name + ".ics")
-
-    # Generate the calendar event
-    cal = RiCal.Calendar do |calendar|
-      calendar.event do |details|
-        details.summary     = event.name
-        details.description = "Description:\n" + event.description + "\n\nNotes:\n" + event.notes
-        details.dtstart     = Time.parse(event.start_time.to_s).getutc
-        details.dtend       = Time.parse(event.end_time.to_s).getutc
-        details.location    = event.address
-      end
-    end
 
     # Respond to the request with the calendar event as an .ics file streamed to the client
     respond_to do |format|

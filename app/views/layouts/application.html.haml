@@ -2,7 +2,7 @@
 !!! 5
 %html
 	%head
-		%title Orlando Tech Events
+		%title=t 'site.name'
 		-# Include stylesheet and javascript manifests
 		=stylesheet_link_tag    "application"
 		=javascript_include_tag "application"
@@ -21,15 +21,15 @@
 						%span.icon-bar
 						%span.icon-bar
 
-					%a.brand{href: "#{url_for root_path}"} Orlando Tech Events
+					%a.brand{href: "#{url_for root_path}"}=t 'site.name'
 
 					.nav-collapse
 						%ul.nav.pull-right
 							%li
 								-if current_user
-									=link_to "Sign out", :signout
+									=link_to t('header.sign_out'), :signout
 								-else
-									%li=link_to "Sign in with Twitter", "/auth/twitter", id: "signin"
+									%li=link_to t('header.sign_in'), "/auth/twitter", id: "signin"
 
 
 		-# Center everything else on the page in the container
@@ -49,11 +49,11 @@
 		%footer
 			.container
 				.row
-					.span6
+					.span6#copyright
 						%p
-							TechEvents.us is #{link_to "open-source software", "http://github.com/envylabs/TechEvents", target: "black"}.
+							=t 'footer.oss_html'
 							%br
-							%small Copyright &copy; 2012 Envy Labs, LLC. All rights reserved.
+							%small=t 'footer.copyright_html'
 					.span6#social-media
-						%a.social-icon.social-icon-tw{href: "http://twitter.com/OTechEvents"}
-						%a.social-icon.social-icon-fb{href: "http://www.facebook.com/OrlandoTechEvents"}
+						%a.social-icon.social-icon-tw{href: "http://twitter.com/#{t 'site.social.twitter'}"}
+						%a.social-icon.social-icon-fb{href: "http://www.facebook.com/#{t 'site.social.facebook'}"}

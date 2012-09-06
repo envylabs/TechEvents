@@ -8,39 +8,37 @@
         %li=msg
 
   %fieldset
-    .section-header
-      Who's having the event?
+    .section-header=t 'events_form.section_header.who'
 
     #select_group_panel
       .control-group
-        =f.label :group_id, "Name of group", :class => "control-label"
+        =f.label :group_id, t('events_form.fields.group.label'), :class => "control-label"
         .controls
-          =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => "Choose a group" }
+          =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => t('events_form.fields.group.placeholder') }
           or
-          %a.btn.btn-small#create_new_group Create a new group
+          %a.btn.btn-small#create_new_group=t 'events_form.fields.group.create_group_button'
 
     #create_group_panel.hide
       .control-group
-        =label_tag :"group[name]", "Name of group", :class => "control-label"
+        =label_tag :"group[name]", t('events_form.fields.new_group.label'), :class => "control-label"
         .controls
-          =text_field_tag :"group[name]", nil, :class => "span5", :placeholder => "Orlando Ruby User Group", :id => "group_name"
+          =text_field_tag :"group[name]", nil, :class => "span5", :placeholder => t('events_form.fields.new_group.placeholder'), :id => "group_name"
 
     #event_details_panel
-      .section-header
-        What's going on?
+      .section-header=t 'events_form.section_header.what'
 
       .control-group
-        =f.label :name, "Name of event", :class => "control-label"
+        =f.label :name, t('events_form.fields.name.label'), :class => "control-label"
         .controls
-          =f.text_field :name, :class => "span5", :placeholder => "Codeschool Beta", :id => "event_name", :required => "required"
+          =f.text_field :name, :class => "span5", :placeholder => t('events_form.fields.name.placeholder'), :id => "event_name", :required => "required"
 
       .control-group
-        =f.label :description, "Description", :class => "control-label"
+        =f.label :description, t('events_form.fields.description.label'), :class => "control-label"
         .controls
-          =f.text_area :description, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_description", :rows => "5", :required => "required"
+          =f.text_area :description, :class => "span5", :placeholder => t('events_form.fields.description.placeholder'), :id => "event_description", :rows => "5", :required => "required"
 
       .control-group
-        =f.label :image, "Image", :class => "control-label"
+        =f.label :image, t('events_form.fields.image.label'), :class => "control-label"
         .controls
           =image_tag @event.image.url, id: "event_image_preview"
           %br
@@ -49,36 +47,35 @@
           =f.hidden_field :image_cache
 
       .control-group
-        =f.label :link, "Link for more info", :class => "control-label"
+        =f.label :link, t('events_form.fields.link.label'), :class => "control-label"
         .controls
-          =f.text_field :link, :class => "span5", :placeholder => "http://envylabs.com/", :id => "event_link"
+          =f.text_field :link, :class => "span5", :placeholder => t('events_form.fields.link.placeholder'), :id => "event_link"
 
-      .section-header
-        When and where?
+      .section-header=t 'events_form.section_header.when'
 
       .control-group
-        =f.label :start_time, "Start Time", :class => "control-label"
+        =f.label :start_time, t('events_form.fields.time.start_time.label'), :class => "control-label"
         .controls
           =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
           =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
 
       .control-group
-        =f.label :end_time, "End Time", :class => "control-label"
+        =f.label :end_time, t('events_form.fields.time.end_time.label'), :class => "control-label"
         .controls
           =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
           =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
-          %p.help-block <strong>Note:</strong> Please enter start and end times in 24 hour format
+          %p.help-block=t 'events_form.fields.time.note_html'
 
       .control-group
-        =f.label :original_address, "Address", :class => "control-label"
+        =f.label :original_address, t('events_form.fields.address.label'), :class => "control-label"
         .controls
           -if @event.address_tbd
             .event_original_address_container.hide
-              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => t('events_form.fields.address.placeholder'), :id => "event_original_address", :required => "required"
               %br
           -else
             .event_original_address_container
-              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => "189 S Orange Ave, Orlando, FL", :id => "event_original_address", :required => "required"
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => t('events_form.fields.address.placeholder'), :id => "event_original_address", :required => "required"
               %br
 
           .map_container.hide
@@ -87,30 +84,26 @@
 
           .event_address_tbd_container
             =f.check_box :address_tbd, :id => "event_address_tbd"
-            To be determined
+            =t 'events_form.fields.address.tbd'
 
           -if !@event.address.blank?
-            %p.help-block
-              %strong The current address is:
-              =@event.address
+            %p.help-block=t 'events_form.fields.address.current_address_html', address: @event.address
 
-      .section-header
-        Anything else to add?
+      .section-header=t 'events_form.section_header.anything_else'
 
       .control-group
-        =f.label :notes, "Notes", :class => "control-label"
+        =f.label :notes, t('events_form.fields.notes.label'), :class => "control-label"
         .controls
-          =f.text_area :notes, :class => "span5", :placeholder => "Mauris iaculis porttitor posuere. Praesent id metus massa.", :id => "event_notes", :rows => "5"
+          =f.text_area :notes, :class => "span5", :placeholder => t('events_form.fields.notes.placeholder'), :id => "event_notes", :rows => "5"
 
-      .section-header
-        Rock and roll
+      .section-header=t 'events_form.section_header.rock_and_roll'
 
       .row
         .span6
-          %p Your event will be #{@event.persisted? ? "updated" : "posted"} intstantly. Showcased events found in the Orlando Tech Events newsletter, however, must be approved prior to display.
+          %p=@event.persisted? ? t('events_form.messages.event_will_be_updated') : t('events_form.messages.event_will_be_posted')
 
         .span2
-          %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? "Update Event" : "Post Event"}
+          %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? t('events_form.buttons.update') : t('events_form.buttons.post')}
 
 -if controller.action_name == "new"
   :javascript
