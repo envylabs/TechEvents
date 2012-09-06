@@ -1,5 +1,7 @@
 Techevents::Application.routes.draw do
-	resources :events, :except => [:show, :destroy]
+	resources :events, :except => [:show, :destroy] do
+		get "calendar", on: :member, format: :ics
+	end
 	match "/groups/:id/last_event" => "groups#last_event", format: :json
 
 	match "/auth/:provider/callback" => "sessions#create", as: :sessions_create

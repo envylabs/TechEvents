@@ -23,6 +23,9 @@ gem 'carrierwave', '~> 0.6.2'
 # Geocoding
 gem 'geocoder', '~> 1.1.2'
 
+# Calendar
+gem 'ri_cal', '~> 0.8.8'
+
 # Interface
 gem 'haml-rails', '~> 0.3.4'
 gem 'anjlab-bootstrap-rails', '~> 2.0.4.3', :require => 'bootstrap-rails'

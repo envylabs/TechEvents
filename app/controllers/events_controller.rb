@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource only: :index
+  skip_load_resource only: [:index, :calendar]
+  skip_authorize_resource only: :calendar
 
   # GET /events
   # GET /events.json
@@ -83,6 +84,31 @@ class EventsController < ApplicationController
       else
         format.html { render action: "edit" }
       end
+    end
+  end
+
+  # GET /events/1/calendar
+  def calendar
+    # Load the event
+    event = Event.find(params[:id])
+
+    # Create a safe filename for the event's ics file
+    filename = sanitize_filename(event.name + ".ics")
+
+    # Generate the calendar event
+    cal = RiCal.Calendar do |calendar|
+      calendar.event do |details|
+        details.summary     = event.name
+        details.description = "Description:\n" + event.description + "\n\nNotes:\n" + event.notes
+        details.dtstart     = Time.parse(event.start_time.to_s).getutc
+        details.dtend       = Time.parse(event.end_time.to_s).getutc
+        details.location    = event.address
+      end
+    end
+
+    # Respond to the request with the calendar event as an .ics file streamed to the client
+    respond_to do |format|
+      format.ics { send_data(cal.export, filename: filename, disposition: "inline; filename=" + filename, type: "text/calendar") }
     end
   end
 end

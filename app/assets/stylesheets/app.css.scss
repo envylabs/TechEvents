@@ -74,7 +74,11 @@ a {
 	.event-entry {
 		margin-bottom: 15px;
 		h3 {
-			margin-top: -5px; } }
+			margin-top: -5px; }
+		.span2 p {
+			margin-top: 5px;
+			.btn {
+				width: 120px; } } }
 }
 
 .event-form {
