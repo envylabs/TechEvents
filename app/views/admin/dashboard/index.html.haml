@@ -1,0 +1,14 @@
+.row
+	.span12
+		%h1 Admin Dashboard
+		%hr
+
+.row
+	.span6
+		%p{style: "text-align: center;"}
+			=link_to "Use this Twitter account to post Tech Events updates", url_for(admin_social_set_account_path), class: "btn btn-large"
+			%br
+			%small @#{@twitter_account} is currently being used
+
+		%br
+		%br

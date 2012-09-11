@@ -10,6 +10,11 @@ Techevents::Application.routes.draw do
 	resource :user, only: [:edit, :update], controller: "user"
 	resource :subscription, only: [:create, :destroy], controller: "subscription"
 
+	namespace :admin do
+		root :to => "dashboard#index"
+		match "/social/set_account" => "social#update"
+	end
+
 	root :to => "events#index"
 
 	if Rails.env.development?

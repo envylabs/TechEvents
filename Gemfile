@@ -4,6 +4,9 @@ gem 'rails', '3.2.6'
 
 gem 'pry'
 
+# Settings
+gem 'rails-settings-cached', '~> 0.2.2'
+
 # DelayedJob
 gem 'daemons', '~> 1.1.8'
 gem 'delayed_job_active_record', '~> 0.3.2'
@@ -29,6 +32,7 @@ gem 'ri_cal', '~> 0.8.8'
 # Interface
 gem 'haml-rails', '~> 0.3.4'
 gem 'anjlab-bootstrap-rails', '~> 2.0.4.3', :require => 'bootstrap-rails'
+gem 'jquery-rails'
 
 group :development do
 	gem 'sqlite3'
@@ -52,5 +56,3 @@ group :test, :development do
 	gem 'factory_girl_rails', '~> 3.5.0'
 	gem 'capybara', '~> 1.1.2'
 end
-
-gem 'jquery-rails'
