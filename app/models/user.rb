@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-	attr_accessible :admin, :email, :handle, :provider, :token, :uid
+	attr_accessible :admin, :email, :handle, :provider, :twitter_token, :twitter_secret, :facebook_token, :uid
 
 	has_many :events
 
@@ -37,7 +37,8 @@ class User < ActiveRecord::Base
 		create! do |user|
 			user.provider = auth['provider']
 			user.uid = auth['uid']
-			user.token = auth['credentials']['token']
+			user.twitter_token = auth['credentials']['token']
+			user.twitter_secret = auth['credentials']['secret']
 			user.handle = auth['info']['nickname']
 			user.admin = false
 		end

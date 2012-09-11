@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	attr_accessible :street, :city, :state, :country, :description, :image, :image_cache, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :user_id, :group_id, :group_name
+	attr_accessible :street, :city, :state, :country, :description, :image, :image_cache, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :post_to_social_at, :posted_twitter, :user_id, :group_id, :group_name
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 
@@ -76,8 +76,29 @@ class Event < ActiveRecord::Base
 	before_validation :set_datetimes
 
 	# Geocode via dealyed_job on after_create and after_update
-	after_save :invoke_geocoder
-	after_update :schedule_social_media
+	after_create :invoke_geocoder
+	# TODO: Figure out way to run after update without running into looping issue
+
+
+	# Social media posting logic
+	after_create :schedule_social_media
+	# TODO: Figure out way to run after update without running into looping issue
+
+	def schedule_social_media
+		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
+	end
+
+	def post_twitter
+		social_media_message = "This is a sample message"
+
+		# client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
+		# client.update(social_media_message)
+		
+		if !self.posted_twitter
+			self.update_attributes(posted_twitter: true)
+		end
+	end
+	handle_asynchronously :post_twitter, :run_at => Proc.new {|p| p.post_to_social_at }
 
 
 	private
@@ -98,9 +119,5 @@ class Event < ActiveRecord::Base
 
 	def invoke_geocoder
 		Delayed::Job.enqueue(EventGeocodeJob.new(self.id))
-	end
-
-	def schedule_social_media
-		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
 	end
 end

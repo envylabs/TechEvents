@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911144823) do
+ActiveRecord::Schema.define(:version => 20120911195513) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -36,11 +36,11 @@ ActiveRecord::Schema.define(:version => 20120911144823) do
     t.string   "link"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.float    "latitude",         :limit => 255
-    t.float    "longitude",        :limit => 255
+    t.float    "latitude",          :limit => 255
+    t.float    "longitude",         :limit => 255
     t.boolean  "newsletter"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "original_address"
     t.string   "street"
     t.string   "city"
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(:version => 20120911144823) do
     t.boolean  "address_tbd"
     t.integer  "group_id"
     t.string   "image"
+    t.boolean  "posted_twitter"
+    t.datetime "post_to_social_at"
   end
 
   create_table "groups", :force => true do |t|
@@ -72,12 +74,14 @@ ActiveRecord::Schema.define(:version => 20120911144823) do
   create_table "users", :force => true do |t|
     t.string   "provider"
     t.string   "uid"
-    t.string   "token"
+    t.string   "twitter_token"
     t.string   "handle"
     t.string   "email"
     t.boolean  "admin"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "twitter_secret"
+    t.string   "facebook_token"
   end
 
 end
