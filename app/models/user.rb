@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def admin?
+		self.admin == true ? true : false
+	end
+
 
 	private
 

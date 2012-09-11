@@ -102,12 +102,12 @@ a {
 
 footer {
 	background: #3d6a83 url(../assets/bg-footer.png) repeat;
-	height: 80px;
+	height: 100px;
 	padding: 40px 15px 10px 15px;
 	-webkit-box-shadow: inset 0px 3px 15px rgba(0,0,0,0.4);
 }
 
-footer #copyright a {
+footer #copyright a, footer #admin a {
 	color: rgba(255, 255, 255, 0.6);
 	transition: color 0.5s;
 	-moz-transition: color 0.5s;
@@ -115,7 +115,7 @@ footer #copyright a {
 	-o-transition: color 0.5s;
 }
 
-footer #copyright a:hover {
+footer #copyright a:hover, footer #admin a:hover {
 	color: rgba(255, 255, 255, 1.0);
 	text-decoration: none;
 	transition: color 0.5s;

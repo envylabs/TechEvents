@@ -46,6 +46,7 @@
 			-# Yield all other content from views here
 			=yield
 
+		- # HTML5 footer for copyright, social media, etc.
 		%footer
 			.container
 				.row
@@ -57,3 +58,11 @@
 					.span6#social-media
 						%a.social-icon.social-icon-tw{href: "http://twitter.com/#{t 'site.social.twitter'}"}
 						%a.social-icon.social-icon-fb{href: "http://www.facebook.com/#{t 'site.social.facebook'}"}
+				
+				- # Display link to access admin panel, if admin is signed in
+				-if admin_signed_in?
+					.row
+						.span12#admin
+							%p{style: "text-align: center;"}
+								%br
+								=link_to "Admin Panel", admin_root_path

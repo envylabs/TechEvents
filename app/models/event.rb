@@ -77,6 +77,7 @@ class Event < ActiveRecord::Base
 
 	# Geocode via dealyed_job on after_create and after_update
 	after_save :invoke_geocoder
+	after_update :schedule_social_media
 
 
 	private
@@ -96,6 +97,10 @@ class Event < ActiveRecord::Base
 	end
 
 	def invoke_geocoder
-		Delayed::Job.enqueue(EventJob.new(self.id))
+		Delayed::Job.enqueue(EventGeocodeJob.new(self.id))
+	end
+
+	def schedule_social_media
+		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
 	end
 end

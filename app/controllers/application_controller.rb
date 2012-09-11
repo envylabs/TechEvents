@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
 	helper_method :current_user
 	helper_method :user_signed_in?
+	helper_method :admin_signed_in?
 	helper_method :require_authentication!
 	helper_method :sanitize_filename
 
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
 
 	def user_signed_in?
 		!!current_user
+	end
+
+	def admin_signed_in?
+		!!current_user && !!current_user.admin?
 	end
 
 	def require_authentication!

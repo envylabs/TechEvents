@@ -1,4 +1,4 @@
-class Admin::SocialController < ApplicationController
+class Admin::SocialController < Admin::BaseController
   # PUT /admin/social/set_account
   def update
     if Settings.user_id_for_twitter = current_user.id

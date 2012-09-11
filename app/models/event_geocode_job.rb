@@ -1,4 +1,4 @@
-class EventJob < Struct.new(:event_id) 
+class EventGeocodeJob < Struct.new(:event_id) 
 	def perform
 		Event.find(event_id).tap do |e|
 			e.geocode
