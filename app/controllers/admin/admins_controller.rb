@@ -1,10 +1,10 @@
 class Admin::AdminsController < Admin::BaseController
   # POST /admin/admins
   def create
-  	user = User.where(handle: params[:handle]).first
-
-  	if user.update_attributes(admin: true)
-  		redirect_to admin_root_url, notice: "@#{user.handle} was appointed admin rights."
+	if user = User.where(handle: params[:handle]).first
+		user.update_attributes(admin: true) ? redirect_to(admin_root_url, notice: "@#{user.handle} was appointed admin rights.") : false
+  	else
+  		redirect_to admin_root_url, notice: "@#{params[:handle]} is not a user."
   	end
   end
 
