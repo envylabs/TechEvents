@@ -89,7 +89,12 @@ class Event < ActiveRecord::Base
 	end
 
 	def post_twitter
-		social_media_message = "This is a sample message"
+		# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
+		if Time.at(post_to_social_at).to_date === Time.at(start_time).to_date
+			social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+		else
+			social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+		end
 
 		# client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
 		# client.update(social_media_message)

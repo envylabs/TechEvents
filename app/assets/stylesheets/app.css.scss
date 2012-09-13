@@ -3,9 +3,6 @@
   Special styles to extend Bootstrap
 */
 
-/* Body and structure
--------------------------------------------------- */
-
 body {
   background: #fff url(../assets/bg-body.png) repeat;
   position: relative;
@@ -35,6 +32,10 @@ a {
 		margin-left: 5px;
 		&:hover { background-color: #3b5998; }
 	}
+}
+
+span.add-on {
+	margin-right: -5px !important;
 }
 
 .sidebar {

@@ -13,6 +13,7 @@ Techevents::Application.routes.draw do
 	namespace :admin do
 		root :to => "dashboard#index"
 		match "/social/set_account" => "social#update"
+		resources :admins, only: [:create, :destroy]
 	end
 
 	root :to => "events#index"
