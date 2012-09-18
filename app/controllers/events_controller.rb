@@ -101,4 +101,16 @@ class EventsController < ApplicationController
       format.ics { send_data(cal.export, filename: filename, disposition: "inline; filename=" + filename, type: "text/calendar") }
     end
   end
+
+  # GET /events/feed
+  def feed
+    # TODO: Actually make this feed valid and working
+
+    # Load all of the feed's iCal objects
+    events = Event.all
+    cal = Event.to_feed(events)
+
+    # Respond to the request with the feed as text
+    render :text => cal
+  end
 end

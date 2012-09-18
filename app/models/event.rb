@@ -56,6 +56,21 @@ class Event < ActiveRecord::Base
 		end
 	end
 
+	def self.to_feed(events)
+		RiCal.Calendar do |calendar|
+			calendar.add_x_property 'X-WR-CALNAME', 'Tech Events'
+			events.each do |event|
+				calendar.event do |details|
+					details.summary     = event.name
+					details.description = "Description:\n" + event.description + "\n\nNotes:\n" + event.notes
+					details.dtstart     = Time.parse(event.start_time.to_s).getutc
+					details.dtend       = Time.parse(event.end_time.to_s).getutc
+					details.location    = event.address
+				end
+			end
+		end.export
+	end
+
 
 	# Auto-fetch coordinates for :original_address and save them to the :latitude and :longitude columns
 	geocoded_by :original_address
