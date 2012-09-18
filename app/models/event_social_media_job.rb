@@ -6,11 +6,11 @@ class EventSocialMediaJob < Struct.new(:event_id)
 		post_to_social_at_2 = event.start_time - 15.minutes
 
 		if event.update_attributes(post_to_social_at: post_to_social_at_1)
-			event.post_twitter
+			event.post_twitter(1)
 		end
 
 		if event.update_attributes(post_to_social_at: post_to_social_at_2)
-			event.post_twitter
+			event.post_twitter(2)
 		end
 	end
 end

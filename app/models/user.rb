@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
 
 
 	def self.from_omniauth(auth)
-		where(auth.slice('provider', 'uid')).first || create_from_omniauth(auth)
+		user = self.where(auth.slice('provider', 'uid')).first
+		user ? login_from_omniauth(user, auth) : create_from_omniauth(auth)
 	end
 
 	def process_email_update(new_email)
@@ -30,8 +31,28 @@ class User < ActiveRecord::Base
 		self.admin == true ? true : false
 	end
 
+	def make_admin
+		self.update_attributes(admin: true) ? true : false
+	end
+
+	def remove_admin(current_user)
+		(self != current_user && self.update_attributes(admin: false)) ? true : false
+	end
+
 
 	private
+
+	def self.login_from_omniauth(user, auth)
+		if user.twitter_token != auth['credentials']['token']
+			user.update_attributes(twitter_token: auth['credentials']['token'])
+		end
+
+		if user.twitter_secret != auth['credentials']['secret']
+			user.update_attributes(twitter_secret: auth['credentials']['secret'])
+		end
+
+		return user
+	end
 
 	def self.create_from_omniauth(auth)
 		create! do |user|

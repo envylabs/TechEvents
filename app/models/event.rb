@@ -88,16 +88,24 @@ class Event < ActiveRecord::Base
 		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
 	end
 
-	def post_twitter
+	def post_twitter(itteration)
 		# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
 		if Time.at(post_to_social_at).to_date === Time.at(start_time).to_date
-			social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			if itteration == 1
+				social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			elsif itteration == 2
+				social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			end
 		else
-			social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			if itteration == 1
+				social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			elsif itteration == 2
+				social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+			end
 		end
 
-		# client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
-		# client.update(social_media_message)
+		client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
+		client.update(social_media_message)
 		
 		if !self.posted_twitter
 			self.update_attributes(posted_twitter: true)
