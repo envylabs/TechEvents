@@ -33,7 +33,7 @@ describe 'Events' do
 		subject { session[:post_auth_path] = nil }
 
 		before do
-			OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(:provider => user.provider, :uid => user.uid)
+			OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(:provider => user.provider, :uid => user.uid, 'credentials' => { :token => user.twitter_token, :secret => user.twitter_secret })
 
 			visit events_path
 

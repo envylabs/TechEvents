@@ -7,13 +7,13 @@ describe User do
 
 		context 'when passed a previously saved auth hash' do
 			let (:user) { FactoryGirl.create :user }
-			let (:auth) { { provider: user.provider, uid: user.uid } }
+			let (:auth) { { provider: user.provider, uid: user.uid, 'credentials' => { token: user.twitter_token, secret: user.twitter_secret } } }
 
 			it { should == user }
 		end
 
 		context 'when passed a new auth hash' do
-			let (:auth) { { provider: 'twitter', uid: '987654321', 'credentials' => { token: 'abcdefg' },  'info' => { nickname: 'janedoe' } } }
+			let (:auth) { { provider: 'twitter', uid: '987654321', 'credentials' => { token: 'abcdefg', secret: '111222333' },  'info' => { nickname: 'janedoe' } } }
 
 			it 'persists a user' do
 				expect { subject }.to change(User, :count).by 1
@@ -21,7 +21,8 @@ describe User do
 
 			its (:provider) { should == auth['provider'] }
 			its (:uid) { should == auth['uid'] }
-			its (:token) { should == auth['credentials']['provider'] }
+			its (:twitter_token) { should == auth['credentials']['token'] }
+			its (:twitter_secret) { should == auth['credentials']['secret'] }
 			its (:handle) { should == auth['info']['nickname'] }
 		end
 	end
