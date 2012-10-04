@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	attr_accessible :street, :city, :state, :country, :description, :image, :image_cache, :notes, :end_time, :end_time_date, :end_time_time, :address_tbd, :original_address, :latitude, :link, :longitude, :name, :newsletter, :start_time, :start_time_date, :start_time_time, :post_to_social_at, :posted_twitter, :user_id, :group_id, :group_name
+	attr_protected
 
 	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
 
@@ -15,9 +15,21 @@ class Event < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :group
 
+	# Setup datetimes
+	after_initialize :get_datetimes
+	before_validation :set_datetimes
+
+	# Geocode via dealyed_job on after_create and after_update
+	after_create :invoke_geocoder
+	# TODO: Figure out way to run after update without running into looping issue
+
+
+	# Social media posting logic
+	after_create :schedule_social_media
+	# TODO: Figure out way to run after update without running into looping issue
 
 	def self.upcoming
-		self.where("start_time >= :current_time", current_time: Time.new).order(:start_time)
+		self.where("start_time >= :current_time", current_time: Time.now).order(:start_time)
 	end
 
 	def address
@@ -86,18 +98,6 @@ class Event < ActiveRecord::Base
 		end
 	end
 
-	# Setup datetimes
-	after_initialize :get_datetimes
-	before_validation :set_datetimes
-
-	# Geocode via dealyed_job on after_create and after_update
-	after_create :invoke_geocoder
-	# TODO: Figure out way to run after update without running into looping issue
-
-
-	# Social media posting logic
-	after_create :schedule_social_media
-	# TODO: Figure out way to run after update without running into looping issue
 
 	def schedule_social_media
 		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
@@ -141,8 +141,8 @@ class Event < ActiveRecord::Base
 	end
 
 	def set_datetimes
-		self.start_time = "#{self.start_time_date} #{self.start_time_time}:00"
-		self.end_time = "#{self.end_time_date} #{self.end_time_time}:00"
+		self.start_time ||= "#{self.start_time_date} #{self.start_time_time}:00"
+		self.end_time ||= "#{self.end_time_date} #{self.end_time_time}:00"
 	end
 
 	def invoke_geocoder
