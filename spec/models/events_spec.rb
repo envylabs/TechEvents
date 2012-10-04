@@ -4,6 +4,8 @@ describe Event do
 	it { should belong_to(:user) }
 	it { should belong_to(:group)}
 
+	let(:event) { FactoryGirl.create :event }
+
 	context '.upcoming' do
 		let!(:event_in_future) { FactoryGirl.create(:event, start_time: (Time.now + 1.hour), end_time: (Time.now + 2.hour)) }
 		let!(:event_in_past) { FactoryGirl.create(:event, start_time: (Time.now - 2.hour), end_time: (Time.now - 1.hour)) }
@@ -16,8 +18,6 @@ describe Event do
 	end
 
 	context '#address' do
-		let(:event) { FactoryGirl.create :event }
-
 		context 'with event whos address was already determined' do
 			it 'returns a string of the address' do
 				event.address.should == [event.street, event.city, event.state, event.country].compact.join(', ')
@@ -30,6 +30,25 @@ describe Event do
 			it 'returns nil' do
 				event.address.should == nil
 			end
+		end
+	end
+
+	context "#schedule_social_media" do
+		before { event.schedule_social_media }
+
+		it 'schedules the first post' do
+			Delayed::Job.where(run_at: event.start_time - 4.hours).should_not be_empty
+		end
+
+		it 'schedules the last post' do
+			Delayed::Job.where(run_at: event.start_time - 15.minutes).should_not be_empty
+		end
+
+		it 'runs the jobs' do
+			client_stub = mock_model('TwitterClient')
+			client_stub.should_receive(:update).exactly(2).times
+			Twitter::Client.should_receive(:new).exactly(2).times.and_return(client_stub)
+			Delayed::Worker.new.work_off
 		end
 	end
 end

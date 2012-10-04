@@ -98,23 +98,33 @@ class Event < ActiveRecord::Base
 		end
 	end
 
-
 	def schedule_social_media
-		Delayed::Job.enqueue(EventSocialMediaJob.new(self.id))
+		delay(run_at: first_reminder_at).post_twitter(:first, first_reminder_at)
+		delay(run_at: last_reminder_at).post_twitter(:last, last_reminder_at)
 	end
 
-	def post_twitter(itteration)
+	def first_reminder_at
+		start_time - 4.hours
+	end
+	private :first_reminder_at
+
+	def last_reminder_at
+		start_time - 15.minutes
+	end
+	private :last_reminder_at
+
+	def post_twitter(iteration, post_to_social_at)
 		# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
 		if Time.at(post_to_social_at).to_date === Time.at(start_time).to_date
-			if itteration == 1
+			if iteration == :first
 				social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
-			elsif itteration == 2
+			elsif iteration == :last
 				social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
 			end
 		else
-			if itteration == 1
+			if iteration == :first
 				social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
-			elsif itteration == 2
+			elsif iteration == :last
 				social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
 			end
 		end
@@ -126,8 +136,7 @@ class Event < ActiveRecord::Base
 			self.update_attributes(posted_twitter: true)
 		end
 	end
-	handle_asynchronously :post_twitter, :run_at => Proc.new {|p| p.post_to_social_at }
-
+	private :post_twitter
 
 	private
 
