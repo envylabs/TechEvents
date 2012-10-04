@@ -68,7 +68,7 @@ class Event < ActiveRecord::Base
 					details.location    = event.address
 				end
 			end
-		end.export
+		end
 	end
 
 
