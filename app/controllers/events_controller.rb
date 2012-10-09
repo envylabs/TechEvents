@@ -1,16 +1,13 @@
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource only: [:index, :calendar]
+  skip_load_resource only: [:index, :create, :calendar]
   skip_authorize_resource only: :calendar
 
   # GET /events
   # GET /events.json
   def index
     # Do not use CanCan load_resource here (see skip_load_resource above)
-    @events = Event.upcoming
-
-    @events = @events.group_by{ |u| u.start_time.beginning_of_month }
-    @current_month = Time.now.strftime("%B")
+    @data = Event.data_for_list
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,32 +38,14 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    # @event is already loaded and authorized
-    # @event = Event.new(params[:event])
-    @groups = Group.all
-    last_event = params[:event][:group_id] ? Group.find(params[:event][:group_id]).events.last : nil
-
-    @event.user = current_user
-
-    if !params[:event][:group_id].blank?
-      @event.group = Group.find(params[:event][:group_id])
-    elsif !params[:group][:name].blank?
-      @event.group = Group.create({name: params[:group][:name]})
-    else
-      @event.group = nil
-    end
-
-    if last_event.image? && params[:event][:image].blank?
-      @event.image = last_event.image
-    end
-
+    # Do not use CanCan load_resource here (see skip_load_resource above)
     respond_to do |format|
-      if @event.save
+      if Event.add_event(params, current_user)
         format.html { redirect_to events_path, notice: 'Event was successfully created.' }
       else
         format.html { render action: "new" }
       end
-    end
+    end    
   end
 
   # PUT /events/1
@@ -89,6 +68,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/calendar
   def calendar
+    # Do not use CanCan load_resource here (see skip_load_resource above)
     # Load the event's iCal object
     event = Event.find(params[:id])
     cal = event.to_ical

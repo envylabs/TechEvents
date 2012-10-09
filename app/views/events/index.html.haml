@@ -1,5 +1,5 @@
 .row
-    =render :partial => "upcoming_events", :locals => { :events => @events, :current_month => @current_month }
+    =render :partial => "upcoming_events", :locals => { :events => @data[:events], :current_month => @data[:current_month] }
     
     .span4.sidebar
         .row

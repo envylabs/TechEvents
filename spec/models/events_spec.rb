@@ -17,6 +17,17 @@ describe Event do
 		end
 	end
 
+	context '.data_for_list' do
+		let!(:current_month) { Time.now.strftime("%B") }
+		let!(:events) { Event.upcoming }
+
+		subject { Event.data_for_list }
+
+		it 'should return a hash with two items' do
+			subject.should have(2).itens
+		end
+	end
+
 	context '#address' do
 		context 'with event whos address was already determined' do
 			it 'returns a string of the address' do
