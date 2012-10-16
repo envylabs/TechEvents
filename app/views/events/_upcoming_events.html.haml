@@ -34,3 +34,5 @@
                                 =t('events_upcoming_events.event_entry.posted_by_html', user: link_to("@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"))
                                 -if can? :edit, event
                                     &nbsp;|&nbsp;#{link_to t('events_upcoming_events.event_entry.edit'), edit_event_path(event)}
+                                -if admin_signed_in?
+                                    &nbsp;|&nbsp;#{link_to (event.newsletter == false || event.newsletter.blank? ? t('events_upcoming_events.event_entry.add_to_newsletter') : t('events_upcoming_events.event_entry.remove_from_newsletter')), toggle_newsletter_event_path(event), :remote => true, :"data-event-id" => event.id}

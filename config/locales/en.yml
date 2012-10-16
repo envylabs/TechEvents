@@ -47,6 +47,8 @@ en:
         tbd: 'Address to be determined'
       posted_by_html: 'Posted by %{user}'
       edit: 'Edit'
+      add_to_newsletter: 'Add to Newsletter'
+      remove_from_newsletter: 'Remove from Newsletter'
 
   events_new:
     post_event: "Post an Event"

@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource only: [:index, :create, :calendar]
-  skip_authorize_resource only: :calendar
+  skip_load_resource only: [:index, :create, :calendar, :feed]
+  skip_authorize_resource only: [:calendar, :feed]
 
   # GET /events
   # GET /events.json
@@ -78,7 +78,7 @@ class EventsController < ApplicationController
 
     # Respond to the request with the calendar event as an .ics file streamed to the client
     respond_to do |format|
-      format.ics { send_data(cal.export, filename: filename, disposition: "inline; filename=" + filename, type: "text/calendar") }
+      format.ics { send_data(cal.export, filename: filename, disposition: "attachment; filename=" + filename, type: "text/calendar") }
     end
   end
 
@@ -91,6 +91,16 @@ class EventsController < ApplicationController
     cal = Event.to_feed(events)
 
     # Respond to the request with the feed as text
-    render :text => cal
+    respond_to do |format|
+      format.ics { send_data(cal.export, filename: "feed.ics", disposition: "attachment; filename=feed.ics", type: "text/calendar") }
+    end
+  end
+
+  def toggle_newsletter
+    @event.toggle_newsletter
+
+    respond_to do |format|
+      format.js
+    end
   end
 end

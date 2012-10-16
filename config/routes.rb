@@ -2,6 +2,7 @@ Techevents::Application.routes.draw do
 	resources :events, :except => [:show, :destroy] do
 		get "calendar", on: :member, format: :ics
 		get "feed", on: :collection
+		get "toggle_newsletter", on: :member
 	end
 	match "/groups/:id/last_event" => "groups#last_event", format: :json
 

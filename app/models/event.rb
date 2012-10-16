@@ -99,6 +99,22 @@ class Event < ActiveRecord::Base
 		return event.save
 	end
 
+	def toggle_newsletter
+		if newsletter == false || newsletter.blank?
+			add_to_newsletter
+		else
+			remove_from_newsletter
+		end
+	end
+
+	def add_to_newsletter
+		update_attributes(newsletter: true)
+	end
+
+	def remove_from_newsletter
+		update_attributes(newsletter: false)
+	end
+
 	def address
 		if !address_tbd
 			[street, city, state, country].compact.join(', ')
