@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'Events' do
 	describe '#index' do
-		let!(:previous_event) { FactoryGirl.create :event, name: 'Previous Event', start_time: Time.new - 2.hour, end_time: Time.new - 1.hour }
-		let!(:upcoming_event) { FactoryGirl.create :event, name: 'Upcoming Event', start_time: Time.new + 1.hour, end_time: Time.new + 2.hour }
-		let!(:next_upcoming_event) { FactoryGirl.create :event, name: 'Next Upcoming Event', start_time: Time.new + 1.month, end_time: Time.new + 1.month + 1.hour}
+		let!(:previous_event) { FactoryGirl.create :event, name: 'Previous Event', start_at: Time.new - 2.hour, end_at: Time.new - 1.hour }
+		let!(:upcoming_event) { FactoryGirl.create :event, name: 'Upcoming Event', start_at: Time.new + 1.hour, end_at: Time.new + 2.hour }
+		let!(:next_upcoming_event) { FactoryGirl.create :event, name: 'Next Upcoming Event', start_at: Time.new + 1.month, end_at: Time.new + 1.month + 1.hour}
 
 		before do
 			visit events_path

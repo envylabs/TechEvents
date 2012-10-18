@@ -7,8 +7,8 @@ describe Event do
 	let(:event) { FactoryGirl.create :event }
 
 	context '.upcoming' do
-		let!(:event_in_future) { FactoryGirl.create(:event, start_time: (Time.now + 1.hour), end_time: (Time.now + 2.hour)) }
-		let!(:event_in_past) { FactoryGirl.create(:event, start_time: (Time.now - 2.hour), end_time: (Time.now - 1.hour)) }
+		let!(:event_in_future) { FactoryGirl.create(:event, start_at: (Time.zone.now + 1.hour), end_at: (Time.zone.now + 2.hour)) }
+		let!(:event_in_past) { FactoryGirl.create(:event, start_at: (Time.zone.now - 2.hour), end_at: (Time.zone.now - 1.hour)) }
 
 		subject { Event.upcoming }
 
@@ -18,7 +18,7 @@ describe Event do
 	end
 
 	context '.data_for_list' do
-		let!(:current_month) { Time.now.strftime("%B") }
+		let!(:current_month) { Time.zone.now.strftime("%B") }
 		let!(:events) { Event.upcoming }
 
 		subject { Event.data_for_list }
@@ -48,11 +48,11 @@ describe Event do
 		before { event.schedule_social_media }
 
 		it 'schedules the first post' do
-			Delayed::Job.where(run_at: event.start_time - 4.hours).should_not be_empty
+			Delayed::Job.where(run_at: event.start_at - 4.hours).should_not be_empty
 		end
 
 		it 'schedules the last post' do
-			Delayed::Job.where(run_at: event.start_time - 15.minutes).should_not be_empty
+			Delayed::Job.where(run_at: event.start_at - 15.minutes).should_not be_empty
 		end
 
 		it 'runs the jobs' do
@@ -60,6 +60,20 @@ describe Event do
 			client_stub.should_receive(:update).exactly(2).times
 			Twitter::Client.should_receive(:new).exactly(2).times.and_return(client_stub)
 			Delayed::Worker.new.work_off
+		end
+	end
+
+	context '#init_datetimes' do
+		let(:new_start_at) { Time.zone.now + 2.hour }
+		let(:new_end_at) { Time.zone.now + 3.hour }
+		let!(:event) { FactoryGirl.create(:event, start_at: new_start_at, end_at: new_end_at) }
+
+		it 'should return the correct start timestamp' do
+			event.start_at.should == new_start_at
+		end
+
+		it 'should return the correct end timestamp' do
+			event.end_at.should == new_end_at
 		end
 	end
 end

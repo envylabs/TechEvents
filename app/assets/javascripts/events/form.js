@@ -84,10 +84,10 @@ $(function() {
         elementsToUpdate['description']       = $('#event_description');
         elementsToUpdate['image']             = $('#event_image')
         elementsToUpdate['link']              = $('#event_link');
-        elementsToUpdate['start_date']        = $('#event_start_time_date');
-        elementsToUpdate['start_time']        = $('#event_start_time_time');
-        elementsToUpdate['end_date']          = $('#event_end_time_date');
-        elementsToUpdate['end_time']          = $('#event_end_time_time');
+        elementsToUpdate['start_date']        = $('#event_start_date');
+        elementsToUpdate['start_time']        = $('#event_start_time');
+        elementsToUpdate['end_date']          = $('#event_end_date');
+        elementsToUpdate['end_time']          = $('#event_end_time');
         elementsToUpdate['address']           = $('#event_original_address');
         elementsToUpdate['notes']             = $('#event_notes');
 

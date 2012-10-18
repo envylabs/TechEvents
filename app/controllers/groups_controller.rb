@@ -6,13 +6,13 @@ class GroupsController < ApplicationController
 		authorize! :show, last_event
 
 		# Process all the time and date stuff
-		today = Time.now
+		today = Time.zone.now
 
-		start_parse = Time.parse(last_event.start_time.to_s)
-		start_parse > today ? (new_start_time = start_parse + 1.month) : (new_start_time = today)
+		start_parse = Time.zone.parse(last_event.start_at.to_s)
+		start_parse > today ? (new_start_at = start_parse + 1.month) : (new_start_at = today)
 
-		end_parse = Time.parse(last_event.end_time.to_s)
-		start_parse > today ? (new_end_time = end_parse + 1.month) : (new_end_time = today + 1.day)
+		end_parse = Time.zone.parse(last_event.end_at.to_s)
+		start_parse > today ? (new_end_at = end_parse + 1.month) : (new_end_at = today + 1.day)
 
 		# Build a JSON response and deliver it
 		response = {
@@ -25,10 +25,10 @@ class GroupsController < ApplicationController
 			link:			last_event.link,
 			address:		last_event.address,
 			notes:			last_event.notes,
-			start_date:		new_start_time.strftime('%Y-%m-%d'),
-			start_time:		new_start_time.strftime('%H:%M'),
-			end_date:		new_end_time.strftime('%Y-%m-%d'),
-			end_time:		new_end_time.strftime('%H:%M'),
+			start_date:		new_start_at.strftime('%Y-%m-%d'),
+			start_time:		new_start_at.strftime('%H:%M'),
+			end_date:		new_end_at.strftime('%Y-%m-%d'),
+			end_time:		new_end_at.strftime('%H:%M'),
 		}
 
 		render :json => response

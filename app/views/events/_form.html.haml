@@ -54,16 +54,16 @@
       .section-header=t 'events_form.section_header.when'
 
       .control-group
-        =f.label :start_time, t('events_form.fields.time.start_time.label'), :class => "control-label"
+        =f.label :start_at, t('events_form.fields.time.start_at.label'), :class => "control-label"
         .controls
-          =f.text_field :start_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
-          =f.text_field :start_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
+          =f.text_field :start_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
+          =f.text_field :start_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
 
       .control-group
-        =f.label :end_time, t('events_form.fields.time.end_time.label'), :class => "control-label"
+        =f.label :end_at, t('events_form.fields.time.end_at.label'), :class => "control-label"
         .controls
-          =f.text_field :end_time_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
-          =f.text_field :end_time_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
+          =f.text_field :end_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
+          =f.text_field :end_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
           %p.help-block=t 'events_form.fields.time.note_html'
 
       .control-group

@@ -1,13 +1,13 @@
 class Event < ActiveRecord::Base
 	attr_protected
-	attr_accessor :start_time_date, :start_time_time, :end_time_date, :end_time_time
+	attr_accessor :start_date, :start_time, :default_start_at, :end_date, :end_time, :default_end_at
 
 	validates_presence_of :name
 	validates_presence_of :description
-	validates_presence_of :start_time
-	validates_presence_of :end_time
-	validates_format_of :start_time_time, :with => /\d{1,2}:\d{2}/
-	validates_format_of :end_time_time, :with => /\d{1,2}:\d{2}/
+	# validates_presence_of :start_at
+	# validates_presence_of :end_at
+	# validates_format_of :start_time, :with => /\d{1,2}:\d{2}/
+	# validates_format_of :end_time, :with => /\d{1,2}:\d{2}/
 
 	belongs_to :user
 	belongs_to :group
@@ -17,24 +17,47 @@ class Event < ActiveRecord::Base
 	mount_uploader :image, EventImageUploader
 
 	# Setup datetimes
-	after_initialize :get_datetimes
-	before_validation :set_datetimes
+	before_validation :process_datetime_input
 
-	def get_datetimes
-		self.start_time ||= Time.now
-		self.start_time_date ||= self.start_time.to_date.to_s(:db)
-		self.start_time_time ||= "#{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}"
-		self.end_time ||= Time.now + 1.hour
-		self.end_time_date ||= self.start_time.to_date.to_s(:db)
-		self.end_time_time ||= "#{'%02d' % self.end_time.hour}:#{'%02d' % self.end_time.min}"
+	def initialize(*args)
+		super(*args)
+		init_datetimes
+		self
 	end
-	private :get_datetimes
 
-	def set_datetimes
-		self.start_time ||= "#{self.start_time_date} #{self.start_time_time}:00"
-		self.end_time ||= "#{self.end_time_date} #{self.end_time_time}:00"
+	def init_datetimes
+		# binding.pry 
+
+		self.start_at ||= Time.zone.now
+
+		# binding.pry
+
+		self.default_start_at = self.start_at
+		self.start_date ||= self.start_at.to_date.to_s(:db)
+		self.start_time ||= "#{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}"
+
+		self.end_at ||= Time.zone.now + 1.hour
+		self.default_end_at = self.end_at
+		self.end_date ||= self.end_at.to_date.to_s(:db)
+		self.end_time ||= "#{'%02d' % self.end_at.hour}:#{'%02d' % self.end_at.min}"
 	end
-	private :set_datetimes
+	private :init_datetimes
+
+	def process_datetime_input
+		inputed_start_at = Time.zone.parse("#{self.start_date} #{self.start_time}:00")
+		inputed_end_at = Time.zone.parse("#{self.end_date} #{self.end_time}:00")
+
+		# binding.pry
+
+		if self.default_start_at != inputed_start_at
+			self.start_at = inputed_start_at
+		end
+
+		if self.default_end_at != inputed_end_at
+			self.end_at = inputed_end_at
+		end
+	end
+	private :process_datetime_input
 
 	# Geocode via dealyed_job on after_create and after_update
 	after_create :invoke_geocoder
@@ -62,13 +85,17 @@ class Event < ActiveRecord::Base
 	private :invoke_geocoder
 
 	def self.upcoming
-		self.where("start_time >= :current_time", current_time: Time.now).order(:start_time)
+		self.where("start_at >= :current_time", current_time: Time.zone.now).order(:start_at)
+	end
+
+	def self.newsletter_events
+		self.where("start_at >= :beginning_of_month AND start_at <= :end_of_month AND newsletter = :newsletter_status", beginning_of_month: Time.zone.now.beginning_of_month, end_of_month: Time.zone.now.end_of_month, newsletter_status: true).order(:start_at)
 	end
 
 	def self.data_for_list
 		{
-			current_month: Time.now.strftime("%B"),
-			events: upcoming.group_by{ |u| u.start_time.beginning_of_month }
+			current_month: Time.zone.now.strftime("%B"),
+			events: upcoming.group_by{ |u| u.start_at.beginning_of_month }
 		}
 	end
 
@@ -79,7 +106,7 @@ class Event < ActiveRecord::Base
 		last_event = params[:event][:group_id] ? Group.find(params[:event][:group_id]).events.last : nil
 
 		# Set current_user
-		# event.user = user
+		event.user = user
 
 		# Set group
 		if !params[:event][:group_id].blank?
@@ -96,7 +123,7 @@ class Event < ActiveRecord::Base
 		end
 
 		# Save the event
-		return event.save
+		event.save
 	end
 
 	def toggle_newsletter
@@ -144,8 +171,8 @@ class Event < ActiveRecord::Base
 			calendar.event do |details|
 				details.summary     = self.name
 				details.description = "Description:\n" + self.description + "\n\nNotes:\n" + self.notes
-				details.dtstart     = Time.parse(self.start_time.to_s).getutc
-				details.dtend       = Time.parse(self.end_time.to_s).getutc
+				details.dtstart     = Time.zone.parse(self.start_at.to_s).getutc
+				details.dtend       = Time.zone.parse(self.end_at.to_s).getutc
 				details.location    = self.address
 			end
 		end
@@ -158,8 +185,8 @@ class Event < ActiveRecord::Base
 				calendar.event do |details|
 					details.summary     = event.name
 					details.description = "Description:\n" + event.description + "\n\nNotes:\n" + event.notes
-					details.dtstart     = Time.parse(event.start_time.to_s).getutc
-					details.dtend       = Time.parse(event.end_time.to_s).getutc
+					details.dtstart     = Time.zone.parse(event.start_at.to_s).getutc
+					details.dtend       = Time.zone.parse(event.end_at.to_s).getutc
 					details.location    = event.address
 				end
 			end
@@ -172,29 +199,29 @@ class Event < ActiveRecord::Base
 	end
 
 	def first_reminder_at
-		# start_time - 4.hours + (rand(11) - 5)
-		start_time - 4.hours
+		# start_at - 4.hours + (rand(11) - 5)
+		start_at - 4.hours
 	end
 	private :first_reminder_at
 
 	def last_reminder_at
-		start_time - 15.minutes
+		start_at - 15.minutes
 	end
 	private :last_reminder_at
 
 	def post_twitter(iteration, post_to_social_at)
 		# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
-		if Time.at(post_to_social_at).to_date === Time.at(start_time).to_date
+		if Time.zone.at(post_to_social_at).to_date === Time.zone.at(start_at).to_date
 			if iteration == :first
-				social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+				social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 			elsif iteration == :last
-				social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+				social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 			end
 		else
 			if iteration == :first
-				social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+				social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 			elsif iteration == :last
-				social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_time.hour}:#{'%02d' % self.start_time.min}."
+				social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 			end
 		end
 

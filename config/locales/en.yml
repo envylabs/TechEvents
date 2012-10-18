@@ -83,9 +83,9 @@ en:
         label: "Link for more info"
         placeholder: "http://envylabs.com/"
       time:
-        start_time:
+        start_at:
           label: "Start Time"
-        end_time:
+        end_at:
           label: "End Time"
         note_html: "<strong>Note:</strong> Please enter start and end times in 24 hour format"
       address:

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911195513) do
+ActiveRecord::Schema.define(:version => 20121018191815) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 20120911195513) do
     t.string   "name"
     t.text     "description"
     t.string   "link"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start_at"
+    t.datetime "end_at"
     t.float    "latitude",          :limit => 255
     t.float    "longitude",         :limit => 255
     t.boolean  "newsletter"

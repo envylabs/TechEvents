@@ -17,7 +17,7 @@
                         .span6
                             %h3
                                 =event.name
-                                %small=l(event.start_time, format: "%A, %B #{event.start_time.day.ordinalize}, %I:%m%p")
+                                %small=l(event.start_at, format: "%A, %B #{event.start_at.day.ordinalize}, %I:%m%p")
 
                             %h4=event.hosted_by_group
 
