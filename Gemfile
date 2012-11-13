@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
 
-gem 'pry'
-
 # Settings
 gem 'rails-settings-cached', '~> 0.2.2'
 
@@ -58,4 +56,5 @@ group :test, :development do
 	gem 'shoulda-matchers', '~> 1.2.0'
 	gem 'factory_girl_rails', '~> 3.5.0'
 	gem 'capybara', '~> 1.1.2'
+	gem 'pry-rails', '~> 0.2.2'
 end

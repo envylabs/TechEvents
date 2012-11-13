@@ -1,3 +1,5 @@
+FactoryGirl.duplicate_attribute_assignment_from_initialize_with = false
+
 FactoryGirl.define do
 	factory :event do
 		name 'My Event'
@@ -17,5 +19,7 @@ FactoryGirl.define do
 		address_tbd false
 		user
 		group
+
+		initialize_with { new(start_at: start_at, end_at: end_at) }
 	end
 end

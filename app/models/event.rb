@@ -26,28 +26,26 @@ class Event < ActiveRecord::Base
 	end
 
 	def init_datetimes
-		# binding.pry 
+		# These two blocks should never run if a start_date and start_time attr_accessor is present, because then they'll wipe out whatever was on the form
+		if self.start_date.blank? && self.start_time.blank?
+			self.start_at ||= Time.zone.now
+			self.start_date = self.start_at.to_date.to_s(:db)
+			self.start_time = "#{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}"
+			self.default_start_at = Time.zone.parse("#{self.start_date} #{self.start_time}:00")
+		end
 
-		self.start_at ||= Time.zone.now
-
-		# binding.pry
-
-		self.default_start_at = self.start_at
-		self.start_date ||= self.start_at.to_date.to_s(:db)
-		self.start_time ||= "#{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}"
-
-		self.end_at ||= Time.zone.now + 1.hour
-		self.default_end_at = self.end_at
-		self.end_date ||= self.end_at.to_date.to_s(:db)
-		self.end_time ||= "#{'%02d' % self.end_at.hour}:#{'%02d' % self.end_at.min}"
+		if self.end_date.blank? && self.end_time.blank?
+			self.end_at ||= Time.zone.now + 1.hour
+			self.end_date = self.end_at.to_date.to_s(:db)
+			self.end_time = "#{'%02d' % self.end_at.hour}:#{'%02d' % self.end_at.min}"
+			self.default_end_at = Time.zone.parse("#{self.end_date} #{self.end_time}:00")
+		end
 	end
-	private :init_datetimes
+	public :init_datetimes
 
 	def process_datetime_input
 		inputed_start_at = Time.zone.parse("#{self.start_date} #{self.start_time}:00")
 		inputed_end_at = Time.zone.parse("#{self.end_date} #{self.end_time}:00")
-
-		# binding.pry
 
 		if self.default_start_at != inputed_start_at
 			self.start_at = inputed_start_at
