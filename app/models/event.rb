@@ -18,9 +18,13 @@ class Event < ActiveRecord::Base
 
 	# Setup datetimes
 	before_validation :process_datetime_input
+	after_find :init_datetimes
 
 	def initialize(*args)
 		super(*args)
+
+		binding.pry
+
 		init_datetimes
 		self
 	end
