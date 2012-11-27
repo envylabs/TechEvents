@@ -22,9 +22,6 @@ class Event < ActiveRecord::Base
 
 	def initialize(*args)
 		super(*args)
-
-		binding.pry
-
 		init_datetimes
 		self
 	end

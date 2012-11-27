@@ -16,6 +16,7 @@ Techevents::Application.routes.draw do
 		root :to => "dashboard#index"
 		match "/social/set_account" => "social#update"
 		resources :admins, only: [:create, :destroy]
+		match "/newsletter_link" => "newsletter_link#update", via: :post
 	end
 
 	root :to => "events#index"

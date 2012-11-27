@@ -4,10 +4,8 @@
 		%hr
 
 .row
-	.span12
-		%h2 Social Media Accounts
-.row
 	.span6
+		%h2 Social Media Account
 		%p{style: "text-align: center;"}
 			=link_to "Use this account's Twitter to post Tech Events updates", url_for(admin_social_set_account_path), class: "btn btn-large"
 			%br
@@ -15,6 +13,15 @@
 
 		%br
 		%br
+	
+	.span6
+		%h2 Current Newsletter Link
+		=form_tag(admin_newsletter_link_path, method: "post", class: "form-inline")
+		.input-prepend
+			%input.span4{size: "16", type: "text", name: "link", value: @newsletter_link}
+
+		%button.btn{type: "submit"} Make admin
+		</form>
 
 .row
 	.span12

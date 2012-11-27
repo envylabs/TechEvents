@@ -27,6 +27,7 @@ en:
           description_html: "We'll send you a welcome email shortly."
         error:
           description_html: "<strong>We ecnountered an error!</strong> Sorry about that! Please try subscribing again later."
+      view_this_months_newsletter: "View this month's newsletter"
       social_media:
         header: "Never miss an event"
         description_html: "Follow us on Twitter and Facebook for up-to-the-minute updates about what's going on in your city."
