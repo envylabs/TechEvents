@@ -26,4 +26,6 @@ Techevents::Application.routes.draw do
 	end
 
 	match "/home/index" => "home#index"
+	match "/thanks" => "home#thanks"
+	match "/orlando/thanks.html" => "home#thanks"
 end

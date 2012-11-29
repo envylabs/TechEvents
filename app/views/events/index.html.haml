@@ -9,22 +9,29 @@
 
             .span4
                 .info-block
-                    .subscription-error.alert.alert-error.hide
-                        %button.close{:"data-dismiss" => "alert"} ×
-                        %span.subscription-error-message
-                            =t 'events_index.sidebar.mailing_list.error.description_html'
-                    
-                    .mailing-list-subscribed.hide
-                        %h4=t 'events_index.sidebar.mailing_list.success.header'
-                        %p=t 'events_index.sidebar.mailing_list.success.description_html'
-                    
-                    .mailing-list-form
+                    .mailing-list.form
                         %h3=t 'events_index.sidebar.mailing_list.header'
                         %p=t 'events_index.sidebar.mailing_list.description_html'
+                        %form.form-inline{:action => "https://madmimi.com/signups/subscribe/41385", :method => "post"}
+                            %input.input-medium{:type => "text", :name => "signup[email]", :placeholder => "johndoe@envylabs.com", :required => "required"}
+                            %input.btn{:type => "submit", :value => "Subscribe", :class => "submit"}
 
-                        =form_for :subscription, :url => { :controller => "subscription", :action => "create" }, :html => { :id => "subscription-form", :class => "form-inline" }, :remote => true do |f|
-                            =f.email_field :email, :class => "input-medium", :placeholder => "johndoe@envylabs.com", :id => "subscription_email", :required => "required"
-                            %input.btn{:name => "commit", :type => "submit", :id => "subscription_submit", :value => t('events_index.sidebar.mailing_list.form.subscribe')}
+                    / .subscription-error.alert.alert-error.hide
+                    /     %button.close{:"data-dismiss" => "alert"} ×
+                    /     %span.subscription-error-message
+                    /         =t 'events_index.sidebar.mailing_list.error.description_html'
+                    
+                    / .mailing-list-subscribed.hide
+                    /     %h4=t 'events_index.sidebar.mailing_list.success.header'
+                    /     %p=t 'events_index.sidebar.mailing_list.success.description_html'
+                    
+                    / .mailing-list-form
+                    /     %h3=t 'events_index.sidebar.mailing_list.header'
+                    /     %p=t 'events_index.sidebar.mailing_list.description_html'
+
+                    /     =form_for :subscription, :url => { :controller => "subscription", :action => "create" }, :html => { :id => "subscription-form", :class => "form-inline" }, :remote => true do |f|
+                    /         =f.email_field :email, :class => "input-medium", :placeholder => "johndoe@envylabs.com", :id => "subscription_email", :required => "required"
+                    /         %input.btn{:name => "commit", :type => "submit", :id => "subscription_submit", :value => t('events_index.sidebar.mailing_list.form.subscribe')}
 
             .span4
                 .info-block

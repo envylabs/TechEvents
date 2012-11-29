@@ -103,7 +103,7 @@ class Event < ActiveRecord::Base
 		# Variables
 		event = Event.new(params[:event], user: user)
 		groups = Group.all
-		last_event = params[:event][:group_id] ? Group.find(params[:event][:group_id]).events.last : nil
+		last_event = params[:event][:group_id].blank? ? nil : Group.find(params[:event][:group_id]).events.last
 
 		# Set current_user
 		event.user = user
