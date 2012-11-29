@@ -118,7 +118,7 @@ class Event < ActiveRecord::Base
 		end
 
 		# Set default image
-		if last_event.image? && params[:event][:image].blank?
+		if last_event.present? && last_event.image? && params[:event][:image].blank?
 			event.image = last_event.image
 		end
 
