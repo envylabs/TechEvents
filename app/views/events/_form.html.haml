@@ -1,0 +1,116 @@
+=form_for @event, html: { class: "form-horizontal event-form", multipart: true } do |f|
+  -if @event.errors.any?
+    #error_explanation
+      %h2 #{pluralize(@event.errors.count, "error")} prohibited this event from being saved:
+
+    %ul
+      -@event.errors.full_messages.each do |msg|
+        %li=msg
+
+  %fieldset
+    .section-header=t 'events_form.section_header.who'
+
+    #select_group_panel
+      .control-group
+        =f.label :group_id, t('events_form.fields.group.label'), :class => "control-label"
+        .controls
+          =f.collection_select :group_id, @groups, :id, :name, { :prompt => "" }, { :id => "event_group", :required => "required", :"data-placeholder" => t('events_form.fields.group.placeholder') }
+          or
+          %a.btn.btn-small#create_new_group=t 'events_form.fields.group.create_group_button'
+
+    #create_group_panel.hide
+      .control-group
+        =label_tag :"group[name]", t('events_form.fields.new_group.label'), :class => "control-label"
+        .controls
+          =text_field_tag :"group[name]", nil, :class => "span5", :placeholder => t('events_form.fields.new_group.placeholder'), :id => "group_name"
+
+    #event_details_panel
+      .section-header=t 'events_form.section_header.what'
+
+      .control-group
+        =f.label :name, t('events_form.fields.name.label'), :class => "control-label"
+        .controls
+          =f.text_field :name, :class => "span5", :placeholder => t('events_form.fields.name.placeholder'), :id => "event_name", :required => "required"
+
+      .control-group
+        =f.label :description, t('events_form.fields.description.label'), :class => "control-label"
+        .controls
+          =f.text_area :description, :class => "span5", :placeholder => t('events_form.fields.description.placeholder'), :id => "event_description", :rows => "5", :required => "required"
+
+      .control-group
+        =f.label :image, t('events_form.fields.image.label'), :class => "control-label"
+        .controls
+          =image_tag @event.image.url, id: "event_image_preview"
+          %br
+          %br
+          =f.file_field :image, :id => "event_image"
+          =f.hidden_field :image_cache
+
+      .control-group
+        =f.label :link, t('events_form.fields.link.label'), :class => "control-label"
+        .controls
+          =f.text_field :link, :class => "span5", :placeholder => t('events_form.fields.link.placeholder'), :id => "event_link"
+
+      .section-header=t 'events_form.section_header.when'
+
+      .control-group
+        =f.label :start_at, t('events_form.fields.time.start_at.label'), :class => "control-label"
+        .controls
+          =f.text_field :start_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_start_time_date", :required => "required"
+          =f.text_field :start_time, class: "input-small", size: 5, maxlength: 5, :id => "event_start_time_time", :required => "required"
+
+      .control-group
+        =f.label :end_at, t('events_form.fields.time.end_at.label'), :class => "control-label"
+        .controls
+          =f.text_field :end_date, class: "datepicker", size: 10, maxlength: 10, :id => "event_end_time_date", :required => "required"
+          =f.text_field :end_time, class: "input-small", size: 5, maxlength: 5, :id => "event_end_time_time", :required => "required"
+          %p.help-block=t 'events_form.fields.time.note_html'
+
+      .control-group
+        =f.label :original_address, t('events_form.fields.address.label'), :class => "control-label"
+        .controls
+          -if @event.address_tbd
+            .event_original_address_container.hide
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => t('events_form.fields.address.placeholder'), :id => "event_original_address", :required => "required"
+              %br
+          -else
+            .event_original_address_container
+              =f.text_field :original_address, :value => @event.persisted? ? @event.address : nil, :class => "span5", :placeholder => t('events_form.fields.address.placeholder'), :id => "event_original_address", :required => "required"
+              %br
+
+          .map_container.hide
+            %em Preview:
+            #map_canvas
+
+          .event_address_tbd_container
+            =f.check_box :address_tbd, :id => "event_address_tbd"
+            =t 'events_form.fields.address.tbd'
+
+          -if !@event.address.blank?
+            %p.help-block=t 'events_form.fields.address.current_address_html', address: @event.address
+
+      .section-header=t 'events_form.section_header.anything_else'
+
+      .control-group
+        =f.label :notes, t('events_form.fields.notes.label'), :class => "control-label"
+        .controls
+          =f.text_area :notes, :class => "span5", :placeholder => t('events_form.fields.notes.placeholder'), :id => "event_notes", :rows => "5"
+
+      .section-header=t 'events_form.section_header.rock_and_roll'
+
+      .row
+        .span6
+          %p=@event.persisted? ? t('events_form.messages.event_will_be_updated') : t('events_form.messages.event_will_be_posted')
+
+        .span2
+          %input.btn.btn-primary.btn-large{:name => "commit", :type => "submit", :value => @event.persisted? ? t('events_form.buttons.update') : t('events_form.buttons.post')}
+
+-if controller.action_name == "new"
+  :javascript
+    var RouteInfo = {'create_logic': true};
+-else
+  :javascript
+    var RouteInfo = {'create_logic': false};
+
+%script{src: "http://maps.google.com/maps/api/js?sensor=true", type: "text/javascript"}
+=javascript_include_tag "events/form"

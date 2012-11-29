@@ -1,0 +1,41 @@
+.row
+    =render :partial => "upcoming_events", :locals => { :events => @data[:events], :current_month => @data[:current_month] }
+    
+    .span4.sidebar
+        .row
+            .span4.post-event
+                %h6=t 'events_index.sidebar.post_event.hook'
+                %a.btn.btn-large.btn-success{href: "#{new_event_path}"}=t 'events_index.sidebar.post_event.button'
+
+            .span4
+                .info-block
+                    .subscription-error.alert.alert-error.hide
+                        %button.close{:"data-dismiss" => "alert"} ×
+                        %span.subscription-error-message
+                            =t 'events_index.sidebar.mailing_list.error.description_html'
+                    
+                    .mailing-list-subscribed.hide
+                        %h4=t 'events_index.sidebar.mailing_list.success.header'
+                        %p=t 'events_index.sidebar.mailing_list.success.description_html'
+                    
+                    .mailing-list-form
+                        %h3=t 'events_index.sidebar.mailing_list.header'
+                        %p=t 'events_index.sidebar.mailing_list.description_html'
+
+                        =form_for :subscription, :url => { :controller => "subscription", :action => "create" }, :html => { :id => "subscription-form", :class => "form-inline" }, :remote => true do |f|
+                            =f.email_field :email, :class => "input-medium", :placeholder => "johndoe@envylabs.com", :id => "subscription_email", :required => "required"
+                            %input.btn{:name => "commit", :type => "submit", :id => "subscription_submit", :value => t('events_index.sidebar.mailing_list.form.subscribe')}
+
+            .span4
+                .info-block
+                    %a{href: Settings.newsletter_link}
+                        %h3=t 'events_index.sidebar.view_this_months_newsletter'
+
+            .span4
+                .info-block
+                    %h3=t 'events_index.sidebar.social_media.header'
+                    %p=t 'events_index.sidebar.social_media.description_html'
+                    %a.social-icon.social-icon-tw{href: "http://twitter.com/#{t 'site.social.twitter'}"}
+                    %a.social-icon.social-icon-fb{href: "http://www.facebook.com/#{t 'site.social.facebook'}"}
+
+=javascript_include_tag "events/index"

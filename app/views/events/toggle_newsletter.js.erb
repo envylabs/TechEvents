@@ -1,0 +1,5 @@
+<% if @event.newsletter == false || nil %>
+	$("a[data-event-id=<%= @event.id %>]").text("<%= t('events_upcoming_events.event_entry.add_to_newsletter') %>");
+<% else %>
+	$("a[data-event-id=<%= @event.id %>]").text("<%= t('events_upcoming_events.event_entry.remove_from_newsletter') %>");
+<% end %>

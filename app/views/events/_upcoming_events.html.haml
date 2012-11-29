@@ -1,0 +1,38 @@
+.span8.upcoming-events
+    %h1=t 'events_upcoming_events.title'
+    
+    -events.each do |month, events|
+        .date-header=current_month == month.strftime("%B") ? t("events_upcoming_events.date_header.this_month") : l(month, format: "%B")
+
+        -events.each do |event|
+            .row
+                .span8.event-entry
+                    .row
+                        .span2
+                            =image_tag event.image.url
+                            %p
+                                =link_to calendar_event_path(event), class: "btn btn-small", target: "_blank" do
+                                    %i.icon-calendar
+                                    =t 'events_upcoming_events.event_entry.add_to_calendar'
+                        .span6
+                            %h3
+                                =event.name
+                                %small=l(event.start_at, format: "%A, %B #{event.start_at.day.ordinalize}, %I:%m%p")
+
+                            %h4=event.hosted_by_group
+
+                            -if !event.link.blank?
+                                %p #{event.description} #{link_to t('events_upcoming_events.event_entry.more_info'), event.link}
+                            
+                            -if !event.notes.blank?
+                                %p=t('events_upcoming_events.event_entry.notes_html', notes: event.notes)
+                            
+                            %p
+                                %em=event.map_link.html_safe
+
+                            %h6
+                                =t('events_upcoming_events.event_entry.posted_by_html', user: link_to("@#{event.user.handle}", "http://twitter.com/#{event.user.handle}", target: "_blank"))
+                                -if can? :edit, event
+                                    &nbsp;|&nbsp;#{link_to t('events_upcoming_events.event_entry.edit'), edit_event_path(event)}
+                                -if admin_signed_in?
+                                    &nbsp;|&nbsp;#{link_to (event.newsletter == false || event.newsletter.blank? ? t('events_upcoming_events.event_entry.add_to_newsletter') : t('events_upcoming_events.event_entry.remove_from_newsletter')), toggle_newsletter_event_path(event), :remote => true, :"data-event-id" => event.id}

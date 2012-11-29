@@ -1,0 +1,15 @@
+<% if @error %>
+	// Set the error message
+	$(".subscription-error-message").html('<%= escape_javascript(@error) %>');
+
+	// Show the error message and re-enable the form
+	$(".subscription-error").slideDown("slow");
+	$('input[type="submit"]').removeAttr('disabled');
+<% else %>
+	// Fade out form and display messsage
+	$(".mailing-list-form").fadeOut("slow");
+	$(".mailing-list-subscribed").slideDown("slow");
+
+	// Clear each of the form fields
+	$("#subscription_email").val('');
+<% end %>

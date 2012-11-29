@@ -1,0 +1,52 @@
+.row
+	.span12
+		%h1 Admin Dashboard
+		%hr
+
+.row
+	.span6
+		%h2 Social Media Account
+		%p{style: "text-align: center;"}
+			=link_to "Use this account's Twitter to post Tech Events updates", url_for(admin_social_set_account_path), class: "btn btn-large"
+			%br
+			%small @#{@twitter_account} is currently being used
+
+		%br
+		%br
+	
+	.span6
+		%h2 Current Newsletter Link
+		=form_tag(admin_newsletter_link_path, method: "post", class: "form-inline")
+		.input-prepend
+			%input.span4{size: "16", type: "text", name: "link", value: @newsletter_link}
+
+		%button.btn{type: "submit"} Make admin
+		</form>
+
+.row
+	.span12
+		%h2 Admin Users
+
+.row
+	.span6
+		%h3 Appoint admin
+		=form_tag(admin_admins_path, method: "post", class: "form-inline")
+		.input-prepend
+			%span.add-on @
+			%input.span2{size: "16", type: "text", name: "handle", placeholder: "envylabs"}
+
+		%button.btn{type: "submit"} Make admin
+		</form>
+
+	.span6
+		%h3 Admin list
+		%ul
+			-@admins.each do |a|
+				%li
+					@#{a.handle}
+					=link_to "(remove)", "/admin/admins/#{a.id}", method: :delete, data: { confirm: "Are you sure you want to remove admin rights from @#{a.handle}?"}
+
+.row
+	.span12
+		%br
+		%br
