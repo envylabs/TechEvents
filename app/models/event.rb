@@ -223,9 +223,9 @@ class Event < ActiveRecord::Base
 			# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
 			if post_to_social_at.to_date === Time.zone.at(start_at).to_date
 				if iteration == :first
-					social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+					social_media_message = "Don't forget! #{name} starts today at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 				elsif iteration == :last
-					social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+					social_media_message = "Heads up! #{name} starts today at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
 				end
 			else
 				if iteration == :first
@@ -235,7 +235,9 @@ class Event < ActiveRecord::Base
 				end
 			end
 
-			client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
+			account_to_post_to = User.find(Settings.user_id_for_twitter)
+
+			client = Twitter::Client.new(:oauth_token => account_to_post_to.twitter_token, :oauth_token_secret => account_to_post_to.twitter_secret)
 			client.update(social_media_message)
 			
 			if !self.posted_twitter
