@@ -63,6 +63,7 @@ class Event < ActiveRecord::Base
 
 	# Social media posting logic
 	after_create :schedule_social_media
+	after_update :reschedule_social_media
 
 	# Auto-fetch coordinates for :original_address and save them to the :latitude and :longitude columns
 	geocoded_by :original_address
@@ -197,38 +198,49 @@ class Event < ActiveRecord::Base
 		delay(run_at: last_reminder_at).post_twitter(:last, last_reminder_at)
 	end
 
+	def reschedule_social_media
+		if self.start_at_changed?
+			schedule_social_media
+		end
+	end
+
 	def first_reminder_at
 		# start_at - 4.hours + (rand(11) - 5)
-		start_at - 4.hours
+		Time.zone.at(start_at - 4.hours)
 	end
 	private :first_reminder_at
 
 	def last_reminder_at
-		start_at - 15.minutes
+		Time.zone.at(start_at - 15.minutes)
 	end
 	private :last_reminder_at
 
 	def post_twitter(iteration, post_to_social_at)
-		# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
-		if Time.zone.at(post_to_social_at).to_date === Time.zone.at(start_at).to_date
-			if iteration == :first
-				social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
-			elsif iteration == :last
-				social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
-			end
-		else
-			if iteration == :first
-				social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
-			elsif iteration == :last
-				social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
-			end
-		end
+		post_to_social_at = Time.zone.at(post_to_social_at)
 
-		client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
-		client.update(social_media_message)
-		
-		if !self.posted_twitter
-			self.update_attributes(posted_twitter: true)
+		# Check to make sure that the time we're posting at matches the current posting time
+		if post_to_social_at == (first_reminder_at || last_reminder_at)
+			# Check to see if the day this event gets posted to Twitter occurs on the same day as the event
+			if post_to_social_at.to_date === Time.zone.at(start_at).to_date
+				if iteration == :first
+					social_media_message = "Don't forget! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+				elsif iteration == :last
+					social_media_message = "Heads up! #{name} starts at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+				end
+			else
+				if iteration == :first
+					social_media_message = "Don't forget! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+				elsif iteration == :last
+					social_media_message = "Heads! #{name} starts tomorrow at #{'%02d' % self.start_at.hour}:#{'%02d' % self.start_at.min}."
+				end
+			end
+
+			client = Twitter::Client.new(:oauth_token => user.twitter_token, :oauth_token_secret => user.twitter_secret)
+			client.update(social_media_message)
+			
+			if !self.posted_twitter
+				self.update_attributes(posted_twitter: true)
+			end
 		end
 	end
 	private :post_twitter

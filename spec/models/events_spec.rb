@@ -48,11 +48,11 @@ describe Event do
 		before { event.schedule_social_media }
 
 		it 'schedules the first post' do
-			Delayed::Job.where(run_at: event.start_at - 4.hours).should_not be_empty
+			Delayed::Job.where(run_at: Time.zone.at(event.start_at - 4.hours)).should_not be_empty
 		end
 
 		it 'schedules the last post' do
-			Delayed::Job.where(run_at: event.start_at - 15.minutes).should_not be_empty
+			Delayed::Job.where(run_at: Time.zone.at(event.start_at - 15.minutes)).should_not be_empty
 		end
 
 		it 'runs the jobs' do
@@ -60,6 +60,23 @@ describe Event do
 			client_stub.should_receive(:update).exactly(2).times
 			Twitter::Client.should_receive(:new).exactly(2).times.and_return(client_stub)
 			Delayed::Worker.new.work_off
+		end
+
+		context 'start_at changed' do
+			before { event.update_attributes(start_at: (Time.zone.at(event.start_at + 3.hours))) }
+
+			it 'reschedules the first post' do
+				Delayed::Job.where(run_at: Time.zone.at(event.start_at - 4.hours)).should_not be_empty
+			end
+
+			it 'reschedules the last post' do
+				Delayed::Job.where(run_at: Time.zone.at(event.start_at - 15.minutes)).should_not be_empty
+			end
+
+			it 'does not run the job' do
+				Twitter::Client.should_receive(:new).exactly(0).times
+				Delayed::Worker.new.work_off
+			end
 		end
 	end
 
