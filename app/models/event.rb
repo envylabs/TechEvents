@@ -103,7 +103,7 @@ class Event < ActiveRecord::Base
 		# Variables
 		event = Event.new(params[:event], user: user)
 		groups = Group.all
-		last_event = params[:event][:group_id] ? Group.find(params[:event][:group_id]).events.last : nil
+		last_event = params[:event][:group_id].blank? ? nil : Group.find(params[:event][:group_id]).events.last
 
 		# Set current_user
 		event.user = user
@@ -118,7 +118,7 @@ class Event < ActiveRecord::Base
 		end
 
 		# Set default image
-		if last_event.image? && params[:event][:image].blank?
+		if last_event.present? && last_event.image? && params[:event][:image].blank?
 			event.image = last_event.image
 		end
 
