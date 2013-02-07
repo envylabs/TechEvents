@@ -57,4 +57,5 @@ group :test, :development do
 	gem 'factory_girl_rails', '~> 3.5.0'
 	gem 'capybara', '~> 1.1.2'
 	gem 'pry-rails', '~> 0.2.2'
+	gem 'dotenv', '~> 0.5.0'
 end
