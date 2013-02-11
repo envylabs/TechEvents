@@ -15,11 +15,11 @@
                                     %i.icon-calendar
                                     =t 'events_upcoming_events.event_entry.add_to_calendar'
                         .span6
-                            %h3
-                                =event.name
-                                %small=l(event.start_at, format: "%A, %B #{event.start_at.day.ordinalize}, %I:%m%p")
+                            %h3=event.name
+                            
+                            %small=event.hosted_by_group
 
-                            %h4=event.hosted_by_group
+                            %h4=l(event.start_at, format: "%A, %B #{event.start_at.day.ordinalize}, %I:%m%p")
 
                             -if !event.link.blank?
                                 %p #{event.description} #{link_to t('events_upcoming_events.event_entry.more_info'), event.link}

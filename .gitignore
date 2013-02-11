@@ -15,8 +15,8 @@
 /log/*.log
 /tmp
 
-# Ignore API keys
-/config/keys.yml
+# Ignore ENV variables
+/.env
 
 # Ignore Temp Uploads
 /public/uploads

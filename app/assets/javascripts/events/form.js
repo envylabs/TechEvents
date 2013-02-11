@@ -20,7 +20,7 @@ $(function() {
   });
 
   // Misc setup
-  $('#event_group').chosen().change(function() {
+  $('#event_group').chosen({allow_single_deselect: true}).change(function() {
     fadeInEventDetails();
   });
   $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
